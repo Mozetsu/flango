@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+		<title>Flango</title>
+		<link rel="stylesheet" href="style.css" />
+		<script defer src="./app.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="players">
+				<p class="player">Lucas: <span id="player-one-score">0</span></p>
+				<p class="player">Tie: <span id="tie">0</span></p>
+				<p class="player">CPU: <span id="player-two-score">0</span></p>
+			</div>
+			<ul class="grid-wrapper">
+				<li id="1" class="cell"></li>
+				<li id="2" class="cell"></li>
+				<li id="3" class="cell"><i class="far fa-circle"></i></li>
+				<li id="4" class="cell"><i class="far fa-circle"></i></li>
+				<li id="5" class="cell"></li>
+				<li id="6" class="cell"></li>
+				<li id="7" class="cell"></li>
+				<li id="8" class="cell"><i class="far fa-circle"></i></li>
+				<li id="9" class="cell"></li>
+			</ul>
+			<p class="turn">Your turn 😄</p>
+			<!-- <p class="turn waiting">Waiting opponent... 😴</p> -->
+			<button id="restart">Restart</button>
+		</div>
+	</body>
+</html>
