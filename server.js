@@ -41,6 +41,7 @@ io.on('connection', socket => {
 	});
 
 	socket.on('restart-game', ({ room }) => {
+		console.log(`Room to restart: ${room}`);
 		socket.broadcast.to(room).emit('restart');
 	});
 });

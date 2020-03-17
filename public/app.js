@@ -4,13 +4,20 @@ const marks = {
 	circle: 'far fa-circle'
 };
 
-const player = {
+const game = {
 	room: '7314',
-	username: 'Player One',
-	opponent: 'Player Two',
-	mark: 'times',
-	moves: [],
-	score: 0
+	playerOne: {
+		username: 'Player One',
+		mark: 'times',
+		moves: [],
+		score: 0
+	},
+	playerTwo: {
+		username: 'Player Two',
+		mark: 'circle',
+		moves: [],
+		score: 0
+	}
 };
 
 const winCombinations = [
@@ -39,35 +46,42 @@ const restartBtn = document.querySelector('#restart');
 
 gameCells.forEach(cell => cell.addEventListener('click', pickCell));
 restartBtn.addEventListener('click', () => {
-	startGame();
-	socket.emit('restart-game', { room: player.room });
+	// startGame();
+	// socket.emit('restart-game', { room: game.room });
+	socket.emit('restart-game', { room: game.room });
 });
 
-function pickCell(pos) {
+function pickCell() {
 	// add item if empty
 	if (!this.hasChildNodes()) {
 		const tmp = document.createElement('i');
-		tmp.classList = `${marks[player.mark]}`;
+		tmp.classList = `${marks[game.playerOne.mark]}`;
 		this.appendChild(tmp);
-		player.moves.push(this.id);
-		checkWin(winCombinations, player.moves);
-		socket.emit('player-action', { room: player.room, username: player.username, moves: player.moves });
+		game.playerOne.moves.push(this.id);
+		checkWin(winCombinations, game.playerOne.moves, game.playerOne.username);
+		socket.emit('player-action', {
+			room: game.playerOne.room,
+			username: game.playerOne.username,
+			moves: game.playerOne.moves
+		});
 	}
 }
 
-function checkWin(win, moves) {
+function checkWin(win, moves, user) {
 	win.forEach(combination => {
 		// win
-		if (arrayContainsArray(combination, moves)) endGame(combination);
+		if (arrayContainsArray(combination, moves)) endGame(combination, user);
 	});
 }
 
-function endGame(arr) {
+function endGame(arr, usr) {
+	// user
+	// document.querySelector(usr).innerText =
 	turnContainer.style.display = 'none';
 	restartBtn.style.display = 'inline';
 
-	player.score++;
-	playerOneScore.innerText = player.score;
+	// game.score++;
+	// playerOneScore.innerText = player.score;
 
 	gameCells.forEach(cell => {
 		cell.removeEventListener('click', pickCell);
@@ -76,7 +90,12 @@ function endGame(arr) {
 
 	arr.forEach(elem => {
 		const cell = document.getElementById(elem);
-		cell.style.background = '#d1eeff';
+		// opponent won
+		if (usr !== game.playerOne.username) {
+			cell.style.background = '#ffd1e7';
+		} else {
+			cell.style.background = '#d1eeff';
+		}
 	});
 }
 
@@ -85,7 +104,8 @@ function startGame() {
 	turnContainer.style.display = 'flex';
 
 	// resets player's moves
-	player.moves.length = 0;
+	game.playerOne.moves.length = 0;
+	game.playerTwo.moves.length = 0;
 
 	// resets UI
 	gameCells.forEach(cell => {
@@ -111,32 +131,39 @@ socket.on('connect', () => {
 	// client
 	const currentPlayer = window.prompt('Enter your Username');
 	playerOneName.innerText = `${currentPlayer}`;
-	player.username = currentPlayer;
+	playerOneScore.classList.add(currentPlayer);
+	game.playerOne.username = currentPlayer;
 
 	// const room = generate({ characters: 'number', length: 4 });
-	socket.emit('create-room', { room: player.room, username: player.username });
+	socket.emit('create-room', { room: game.playerOne.room, username: game.playerOne.username });
 });
 
 socket.on('room-connection', ({ players }) => {
-	const opponent = players.find(elem => elem !== player.username);
+	const opponent = players.find(elem => elem !== game.playerOne.username);
 	if (opponent !== undefined) {
-		player.opponent = opponent;
+		game.playerTwo.username = opponent;
 		playerTwoName.innerText = opponent;
+		playerTwoScore.classList.add(opponent);
 	}
 });
 
 socket.on('player-move', playerObj => {
-	console.log(playerObj);
 	const lastMove = playerObj.moves[playerObj.moves.length - 1];
-	// console.log(lastMove);
 	const cell = gameCellsWrapper.children[lastMove - 1];
-	console.log(cell);
 	const tmp = document.createElement('i');
-	tmp.classList = `${marks[player.mark]}`;
+
+	// opponent played
+	if (playerObj.username !== game.playerOne.username) {
+		tmp.classList = `${marks[game.playerTwo.mark]}`;
+	} else {
+		tmp.classList = `${marks[game.playerOne.mark]}`;
+	}
+
 	cell.appendChild(tmp);
-	checkWin(winCombinations, playerObj.moves);
+	checkWin(winCombinations, playerObj.moves, playerObj.username);
 });
 
 socket.on('restart', () => {
+	console.log('Client restart!!!');
 	startGame();
 });
