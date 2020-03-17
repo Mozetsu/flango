@@ -35,6 +35,35 @@ body {
 	align-items: center;
 }
 
+.scoreboard {
+	position: sticky;
+	margin-bottom: 30px;
+	width: 100%;
+	color: var(--primary-color-light);
+	max-width: var(--game-width);
+	display: flex;
+	justify-content: space-between;
+}
+
+.scoreboard div {
+	margin: 5px 0;
+	border-radius: 4px;
+	font-size: 16px;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+}
+
+/* .scoreboard div:nth-child(1) p:nth-child(1),
+.scoreboard div:nth-child(3) p:nth-child(1) {
+	display: none;
+} */
+
+.scoreboard div p:nth-child(2) {
+	margin-left: 5px;
+	font-weight: normal;
+}
+
 .grid-wrapper {
 	width: 100%;
 	height: 100%;
@@ -138,27 +167,6 @@ body {
 	background-color: var(--primary-color-light);
 	cursor: pointer;
 	animation: slideIn 0.3s ease-in-out;
-}
-
-.players {
-	position: sticky;
-	margin-bottom: 30px;
-	width: 100%;
-	color: var(--primary-color-light);
-	max-width: var(--game-width);
-	display: flex;
-	justify-content: space-between;
-}
-
-.players p {
-	margin: 5px 0;
-	border-radius: 4px;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-.players p span {
-	font-weight: normal;
 }
 
 .players .player {

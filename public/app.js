@@ -1,10 +1,3 @@
-// socket
-const socket = io();
-
-socket.on('connect', () => {
-	console.log(`connected as: ${socket.id}`);
-});
-
 // game()
 const marks = {
 	times: 'fas fa-times',
@@ -12,7 +5,9 @@ const marks = {
 };
 
 const player = {
-	name: 'Lucas',
+	room: '7314',
+	username: 'Player One',
+	opponent: 'Player Two',
 	mark: 'times',
 	moves: [],
 	score: 0
@@ -33,16 +28,22 @@ const winCombinations = [
 ];
 
 // client
+const playerOneName = document.querySelector('.player-one-username');
+const playerOneScore = document.getElementById('player-one-score');
+const playerTwoName = document.querySelector('.player-two-username');
+const playerTwoScore = document.getElementById('player-two-score');
+const gameCellsWrapper = document.querySelector('.grid-wrapper');
 const gameCells = document.querySelectorAll('.cell');
 const turnContainer = document.querySelector('.turn');
 const restartBtn = document.querySelector('#restart');
-const playerOneScore = document.getElementById('player-one-score');
-const playerTwoScore = document.getElementById('player-two-score');
 
-restartBtn.addEventListener('click', startGame);
 gameCells.forEach(cell => cell.addEventListener('click', pickCell));
+restartBtn.addEventListener('click', () => {
+	startGame();
+	socket.emit('restart-game', { room: player.room });
+});
 
-function pickCell() {
+function pickCell(pos) {
 	// add item if empty
 	if (!this.hasChildNodes()) {
 		const tmp = document.createElement('i');
@@ -50,6 +51,7 @@ function pickCell() {
 		this.appendChild(tmp);
 		player.moves.push(this.id);
 		checkWin(winCombinations, player.moves);
+		socket.emit('player-action', { room: player.room, username: player.username, moves: player.moves });
 	}
 }
 
@@ -101,3 +103,40 @@ function arrayContainsArray(arr1, arr2) {
 	});
 	return verifyArr.length === arr1.length;
 }
+
+// socket
+const socket = io();
+
+socket.on('connect', () => {
+	// client
+	const currentPlayer = window.prompt('Enter your Username');
+	playerOneName.innerText = `${currentPlayer}`;
+	player.username = currentPlayer;
+
+	// const room = generate({ characters: 'number', length: 4 });
+	socket.emit('create-room', { room: player.room, username: player.username });
+});
+
+socket.on('room-connection', ({ players }) => {
+	const opponent = players.find(elem => elem !== player.username);
+	if (opponent !== undefined) {
+		player.opponent = opponent;
+		playerTwoName.innerText = opponent;
+	}
+});
+
+socket.on('player-move', playerObj => {
+	console.log(playerObj);
+	const lastMove = playerObj.moves[playerObj.moves.length - 1];
+	// console.log(lastMove);
+	const cell = gameCellsWrapper.children[lastMove - 1];
+	console.log(cell);
+	const tmp = document.createElement('i');
+	tmp.classList = `${marks[player.mark]}`;
+	cell.appendChild(tmp);
+	checkWin(winCombinations, playerObj.moves);
+});
+
+socket.on('restart', () => {
+	startGame();
+});
