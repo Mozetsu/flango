@@ -20,6 +20,14 @@ const game = {
 	}
 };
 
+// const parsedGameArray = Object.entries(game).splice(1, 2);
+// for (let player of parsedGameArray) {
+// 	if (player[1].username === 'Player One') {
+// 		player[1].score++;
+// 	}
+// 	console.log(player[1]);
+// }
+
 const winCombinations = [
 	// rows
 	[1, 2, 3],
@@ -76,6 +84,15 @@ function checkWin(win, moves, user) {
 function endGame(arr, usr) {
 	// user
 	// document.querySelector(usr).innerText =
+	console.log(usr);
+	if (usr === game.playerOne.username) {
+		game.playerOne.score++;
+		playerOneScore.innerText = game.playerOne.score;
+	} else {
+		game.playerTwo.score++;
+		playerTwoScore.innerText = game.playerTwo.score;
+	}
+
 	notifications.style.display = 'none';
 	restartBtn.style.display = 'inline';
 
