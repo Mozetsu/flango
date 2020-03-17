@@ -5,7 +5,7 @@ const marks = {
 };
 
 const game = {
-	room: '7314',
+	room: 'DDDD',
 	playerOne: {
 		username: 'Player One',
 		mark: 'times',
@@ -41,13 +41,12 @@ const playerTwoName = document.querySelector('.player-two-username');
 const playerTwoScore = document.getElementById('player-two-score');
 const gameCellsWrapper = document.querySelector('.grid-wrapper');
 const gameCells = document.querySelectorAll('.cell');
-const turnContainer = document.querySelector('.turn');
+const notifications = document.querySelector('.turn');
 const restartBtn = document.querySelector('#restart');
 
 gameCells.forEach(cell => cell.addEventListener('click', pickCell));
 restartBtn.addEventListener('click', () => {
-	// startGame();
-	// socket.emit('restart-game', { room: game.room });
+	startGame();
 	socket.emit('restart-game', { room: game.room });
 });
 
@@ -60,7 +59,7 @@ function pickCell() {
 		game.playerOne.moves.push(this.id);
 		checkWin(winCombinations, game.playerOne.moves, game.playerOne.username);
 		socket.emit('player-action', {
-			room: game.playerOne.room,
+			room: game.room,
 			username: game.playerOne.username,
 			moves: game.playerOne.moves
 		});
@@ -77,7 +76,7 @@ function checkWin(win, moves, user) {
 function endGame(arr, usr) {
 	// user
 	// document.querySelector(usr).innerText =
-	turnContainer.style.display = 'none';
+	notifications.style.display = 'none';
 	restartBtn.style.display = 'inline';
 
 	// game.score++;
@@ -101,7 +100,7 @@ function endGame(arr, usr) {
 
 function startGame() {
 	restartBtn.style.display = 'none';
-	turnContainer.style.display = 'flex';
+	notifications.style.display = 'flex';
 
 	// resets player's moves
 	game.playerOne.moves.length = 0;
@@ -135,7 +134,7 @@ socket.on('connect', () => {
 	game.playerOne.username = currentPlayer;
 
 	// const room = generate({ characters: 'number', length: 4 });
-	socket.emit('create-room', { room: game.playerOne.room, username: game.playerOne.username });
+	socket.emit('create-room', { room: game.room, username: game.playerOne.username });
 });
 
 socket.on('room-connection', ({ players }) => {
@@ -164,6 +163,5 @@ socket.on('player-move', playerObj => {
 });
 
 socket.on('restart', () => {
-	console.log('Client restart!!!');
 	startGame();
 });

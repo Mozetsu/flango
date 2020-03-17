@@ -3,7 +3,6 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const hbs = require('express-handlebars');
-const ministring = require('./utils/ministring');
 
 app.use(express.static('public'));
 const PORT = process.env.PORT || 4000;
@@ -14,7 +13,6 @@ app.set('view engine', 'handlebars');
 const rooms = [];
 
 app.get('/', (req, res) => {
-	// const room = ministring.generate({ characters: 'uppercase, number', length: 4 });
 	res.render('game');
 });
 
@@ -41,8 +39,12 @@ io.on('connection', socket => {
 	});
 
 	socket.on('restart-game', ({ room }) => {
-		console.log(`Room to restart: ${room}`);
 		socket.broadcast.to(room).emit('restart');
+		console.log(`Room to restart: ${room}`);
+	});
+
+	socket.on('disconnect', () => {
+		console.log('Player disconnected');
 	});
 });
 
