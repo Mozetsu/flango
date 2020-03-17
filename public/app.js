@@ -7,26 +7,20 @@ const marks = {
 const game = {
 	room: 'DDDD',
 	playerOne: {
+		id: undefined,
 		username: 'Player One',
 		mark: 'times',
 		moves: [],
 		score: 0
 	},
 	playerTwo: {
+		id: undefined,
 		username: 'Player Two',
 		mark: 'circle',
 		moves: [],
 		score: 0
 	}
 };
-
-// const parsedGameArray = Object.entries(game).splice(1, 2);
-// for (let player of parsedGameArray) {
-// 	if (player[1].username === 'Player One') {
-// 		player[1].score++;
-// 	}
-// 	console.log(player[1]);
-// }
 
 const winCombinations = [
 	// rows
@@ -83,8 +77,6 @@ function checkWin(win, moves, user) {
 
 function endGame(arr, usr) {
 	// user
-	// document.querySelector(usr).innerText =
-	console.log(usr);
 	if (usr === game.playerOne.username) {
 		game.playerOne.score++;
 		playerOneScore.innerText = game.playerOne.score;
@@ -95,9 +87,6 @@ function endGame(arr, usr) {
 
 	notifications.style.display = 'none';
 	restartBtn.style.display = 'inline';
-
-	// game.score++;
-	// playerOneScore.innerText = player.score;
 
 	gameCells.forEach(cell => {
 		cell.removeEventListener('click', pickCell);
@@ -150,7 +139,6 @@ socket.on('connect', () => {
 	playerOneScore.classList.add(currentPlayer);
 	game.playerOne.username = currentPlayer;
 
-	// const room = generate({ characters: 'number', length: 4 });
 	socket.emit('create-room', { room: game.room, username: game.playerOne.username });
 });
 
