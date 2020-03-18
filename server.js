@@ -60,12 +60,14 @@ const removePlayer = playerId => {
 		if (playerId === room.data.playerOne.id) {
 			console.log(`Server: ${room.data.playerOne.username} left [${room.room}]`);
 			populatePlayer(room, undefined, undefined, undefined, 'playerOne');
+			io.to(room.room).emit('player-left', room);
 		}
 
 		// if player is player two
 		if (playerId === room.data.playerTwo.id) {
 			console.log(`Server: ${room.data.playerTwo.username} left [${room.room}]`);
 			populatePlayer(room, undefined, undefined, undefined, 'playerTwo');
+			io.to(room.room).emit('player-left', room);
 		}
 	});
 };
@@ -86,6 +88,7 @@ const addRoom = (serverRooms, roomName, username, userId) => {
 		const currentRoom = getRoomIndex(serverRooms, roomName);
 		// populate player one data
 		populatePlayer(serverRooms[currentRoom], 1, userId, username, 'playerOne');
+		io.to(userId).emit('private', { description: 'playerOne', id: userId });
 		console.log(`Server: ${username} joined [${roomName}]`);
 	} else {
 		//if room exists search for empty player
@@ -94,10 +97,12 @@ const addRoom = (serverRooms, roomName, username, userId) => {
 		// player one empty
 		if (!serverRooms[i].data.playerOne.username) {
 			populatePlayer(serverRooms[i], 1, userId, username, 'playerOne');
+			io.to(userId).emit('private', { description: 'playerOne', id: userId });
 			console.log(`Server: ${username} joined [${serverRooms[i].room}]`);
 		} else {
 			// player two empty
 			populatePlayer(serverRooms[i], 1, userId, username, 'playerTwo');
+			io.to(userId).emit('private', { description: 'playerTwo', id: userId });
 			console.log(`Server: ${username} joined [${serverRooms[i].room}]`);
 		}
 	}
@@ -127,7 +132,6 @@ io.on('connection', socket => {
 
 	socket.on('disconnect', () => {
 		removePlayer(socket.id);
-		// console.log('Player disconnected');
 	});
 });
 

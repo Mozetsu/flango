@@ -4,6 +4,14 @@ const marks = {
 	circle: 'far fa-circle'
 };
 
+const player = {
+	description: undefined,
+	id: undefined,
+	username: undefined,
+	opponent: undefined,
+	mark: undefined
+};
+
 const currentRoom = '7314';
 
 // client
@@ -118,23 +126,25 @@ const socket = io();
 
 socket.on('connect', () => {
 	// client
-	const currentPlayer = window.prompt('Enter your Username');
-	playerOneName.innerText = `${currentPlayer}`;
-	playerOneScore.classList.add(currentPlayer);
-	// game.playerOne.username = currentPlayer;
+	player.username = window.prompt('Enter your Username');
+	playerOneName.innerText = `${player.username}`;
+	playerOneScore.classList.add(player.username);
 
-	socket.emit('create-room', { playerRoom: currentRoom, username: currentPlayer });
+	socket.emit('create-room', { playerRoom: currentRoom, username: player.username });
 });
 
-socket.on('room-connection', room => {
-	// const opponent = players.find(elem => elem !== game.playerOne.username);
-	// if (opponent !== undefined) {
-	// 	game.playerTwo.username = opponent;
-	// 	playerTwoName.innerText = opponent;
-	// 	playerTwoScore.classList.add(opponent);
-	// }
+socket.on('room-connection', ({ room, data }) => {
 	console.log(room);
-	// console.log(`Connected to [${room}]`);
+	// console.log(data);
+	player.description === 'playerOne'
+		? (player.opponent = data.playerTwo.username)
+		: (player.opponent = data.playerOne.username);
+	player.opponent ? (playerTwoName.innerText = player.opponent) : (playerTwoName.innerText = 'Player Two');
+});
+
+socket.on('private', ({ description, id }) => {
+	player.description = description;
+	player.id = id;
 });
 
 socket.on('player-move', playerObj => {
@@ -155,4 +165,10 @@ socket.on('player-move', playerObj => {
 
 socket.on('restart', () => {
 	startGame();
+});
+
+socket.on('player-left', data => {
+	console.log(data);
+	player.opponent = undefined;
+	playerTwoName.innerText = 'Player Two';
 });
