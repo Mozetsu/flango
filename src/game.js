@@ -1,6 +1,7 @@
 const room = {
 	tie: 0,
 	freeCells: 9,
+	playing: undefined,
 	players: 0,
 	playerOne: {
 		id: undefined,
@@ -32,6 +33,11 @@ const winCombinations = [
 	[3, 5, 7]
 ];
 
+// gets a random value between two numbers (min and max included)
+const randomIntFromInterval = (min, max) => {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 function arrayContainsArray(arr1, arr2) {
 	const verifyArr = [];
 	arr1.forEach(elem1 => {
@@ -40,12 +46,11 @@ function arrayContainsArray(arr1, arr2) {
 	return verifyArr.length === arr1.length;
 }
 
-function checkWin(winCombinations, moves, user) {
-	winCombinations.forEach(combination => {
-		// win
-		if (arrayContainsArray(combination, moves)) return { winner: user };
-		// else checkGameState();
-	});
+function checkWin(win, moves, user, cells) {
+	for (let combination of win) {
+		if (arrayContainsArray(combination, moves)) return { result: 'win', username: user, winArray: combination };
+	}
+	if (cells === 0) return { result: 'tie' };
 }
 
-module.exports = { room, winCombinations, checkWin };
+module.exports = { room, winCombinations, checkWin, randomIntFromInterval };

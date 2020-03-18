@@ -54,11 +54,6 @@ body {
 	align-items: center;
 }
 
-/* .scoreboard div:nth-child(1) p:nth-child(1),
-.scoreboard div:nth-child(3) p:nth-child(1) {
-	display: none;
-} */
-
 .scoreboard div p:nth-child(2) {
 	margin-left: 5px;
 	font-weight: normal;
@@ -79,13 +74,11 @@ body {
 	--radius: 4px;
 	font-size: 80px;
 	width: 100%;
-	color: var(--primary-color-light);
 	border: 4px solid var(--primary-color-light);
 	background-color: #ffffff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	cursor: pointer;
 	transition: all 0.1s ease-in;
 }
 
@@ -126,13 +119,16 @@ body {
 	animation: popUp 0.25s ease-in-out;
 }
 
-.fa-times {
+.fa-circle {
+	font-size: 65px;
+}
+
+.playerOne {
 	color: var(--player-one-color-light);
 }
 
-.fa-circle {
+.playerTwo {
 	color: var(--player-two-color-light);
-	font-size: 65px;
 }
 
 .turn {
@@ -141,15 +137,21 @@ body {
 	height: 50px;
 	margin-top: 30px;
 	border-radius: 4px;
-	color: var(--player-one-color-light);
-	background-color: var(--player-one-highlight);
 	font-size: 20px;
-	display: flex;
+}
+
+.your-turn {
+	display: none;
 	align-items: center;
 	justify-content: center;
+	color: var(--player-one-color-light);
+	background-color: var(--player-one-highlight);
 }
 
 .waiting {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	color: var(--player-two-color-light);
 	background-color: var(--player-two-highlight);
 }
@@ -167,10 +169,6 @@ body {
 	background-color: var(--primary-color-light);
 	cursor: pointer;
 	animation: slideIn 0.3s ease-in-out;
-}
-
-.players .player {
-	color: var(--primary-color-light);
 }
 
 @keyframes popUp {

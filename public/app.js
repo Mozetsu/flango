@@ -11,59 +11,80 @@ const player = {
 	username: undefined,
 	opponent: undefined,
 	mark: undefined,
-	moves: []
+	moves: [],
+	isEnd: false
 };
 
-// client
+// scoreboard
 const playerOneName = document.querySelector('.player-one-username');
 const playerOneScore = document.getElementById('player-one-score');
 const playerTwoName = document.querySelector('.player-two-username');
 const playerTwoScore = document.getElementById('player-two-score');
 const tieScore = document.getElementById('tie');
+
+// game cells
 const gameCellsWrapper = document.querySelector('.grid-wrapper');
 const gameCells = document.querySelectorAll('.cell');
-const notifications = document.querySelector('.turn');
+
+// notifications
+const yourTurnNtf = document.querySelector('.your-turn');
+const opponentTurnNtf = document.querySelector('.waiting-opponent');
 const restartBtn = document.querySelector('#restart');
 
-gameCells.forEach(cell => cell.addEventListener('click', pickCell));
 restartBtn.addEventListener('click', () => {
-	socket.emit('restart-game', { room });
+	socket.emit('restart-game', { room: player.room });
 });
 
 function pickCell() {
 	// add item if cell is empty
 	if (!this.hasChildNodes()) {
+		this.classList.add('playerOne');
 		const tmp = document.createElement('i');
 		tmp.classList = `${marks[player.mark]}`;
 		this.appendChild(tmp);
 		player.moves.push(this.id);
+		yourTurnNtf.style.display = 'none';
+		opponentTurnNtf.style.display = 'flex';
 	}
 
 	socket.emit('player-action', {
 		room: player.room,
 		username: player.username,
+		description: player.description,
 		moves: player.moves
+	});
+
+	disableGameCells();
+}
+
+function disableGameCells() {
+	gameCells.forEach(cell => {
+		cell.removeEventListener('click', pickCell);
+		cell.style.cursor = 'auto';
+		opponentTurnNtf.style.display = 'flex';
 	});
 }
 
-function endGame(arr, usr) {
-	// tie
-	if (!usr) {
-		game.tie++;
-		tieScore.innerText = game.tie;
-		game.freeCells = 9;
-	}
+function enableGame() {
+	gameCells.forEach(cell => {
+		cell.addEventListener('click', pickCell);
+		cell.style.cursor = 'pointer';
+		yourTurnNtf.style.display = 'flex';
+		opponentTurnNtf.style.display = 'none';
+	});
+}
 
-	// user
-	if (usr === game.playerOne.username) {
-		game.playerOne.score++;
-		playerOneScore.innerText = game.playerOne.score;
+function endGame(description, score, arr) {
+	// you win
+	if (description === player.description) {
+		playerOneScore.innerText = score;
 	} else {
-		game.playerTwo.score++;
-		playerTwoScore.innerText = game.playerTwo.score;
+		playerTwoScore.innerText = score;
 	}
 
-	notifications.style.display = 'none';
+	yourTurnNtf.style.display = 'none';
+	opponentTurnNtf.style.display = 'none';
+
 	restartBtn.style.display = 'inline';
 
 	gameCells.forEach(cell => {
@@ -73,29 +94,26 @@ function endGame(arr, usr) {
 
 	arr.forEach(elem => {
 		const cell = document.getElementById(elem);
-		// opponent won
-		if (usr !== game.playerOne.username) {
-			cell.style.background = '#ffd1e7';
-		} else {
+		// you win
+		if (cell.classList.contains('playerOne')) {
 			cell.style.background = '#d1eeff';
+		} else {
+			cell.style.background = '#ffd1e7';
 		}
 	});
 }
 
-function startGame() {
+function restartGame() {
+	player.isEnd = false;
 	restartBtn.style.display = 'none';
-	notifications.style.display = 'flex';
-
-	// resets player's moves
-	game.playerOne.moves.length = 0;
-	game.playerTwo.moves.length = 0;
 
 	// resets UI
 	gameCells.forEach(cell => {
+		cell.addEventListener('click', pickCell);
 		cell.innerHTML = '';
+		cell.classList = 'cell';
 		cell.style.background = '#fff';
 		cell.style.cursor = 'pointer';
-		cell.addEventListener('click', pickCell);
 	});
 }
 
@@ -112,8 +130,6 @@ socket.on('connect', () => {
 });
 
 socket.on('room-connection', ({ room, data }) => {
-	console.log(room);
-	// console.log(data);
 	if (player.description === 'playerOne') {
 		player.opponent = data.playerTwo.username;
 		player.mark = data.playerOne.mark;
@@ -121,12 +137,25 @@ socket.on('room-connection', ({ room, data }) => {
 		player.opponent = data.playerOne.username;
 		player.mark = data.playerTwo.mark;
 	}
-	player.opponent ? (playerTwoName.innerText = player.opponent) : (playerTwoName.innerText = 'Player Two');
+
+	// check for opponent
+	if (player.opponent) {
+		playerTwoName.innerText = player.opponent;
+	} else {
+		playerTwoName.innerText = 'Player Two';
+	}
 });
 
 socket.on('private', ({ description, id }) => {
 	player.description = description;
 	player.id = id;
+});
+
+socket.on('player-turn', ({ firstPlayer }) => {
+	if (!player.isEnd) {
+		if (firstPlayer === player.description) enableGame();
+		else disableGameCells();
+	}
 });
 
 socket.on('player-move', ({ username, moves }) => {
@@ -137,19 +166,28 @@ socket.on('player-move', ({ username, moves }) => {
 	// current player played
 	if (username === player.username) {
 		tmp.classList = `${marks[player.mark]}`;
+		cell.classList.add('playerOne');
 	} else {
 		// opponent played
 		const tmpArray = Object.keys(marks);
 		const opponentMark = tmpArray.find(mark => mark !== player.mark);
 		tmp.classList = `${marks[opponentMark]}`;
+		cell.classList.add('playerTwo');
 	}
 
 	cell.appendChild(tmp);
-	// checkWin(winCombinations, playerObj.moves, playerObj.username);
+
+	socket.emit('next-turn', { room: player.room });
+});
+
+socket.on('game-end', ({ description, score, arr }) => {
+	console.log('game ended!');
+	player.isEnd = true;
+	endGame(description, score, arr);
 });
 
 socket.on('restart', () => {
-	startGame();
+	restartGame();
 });
 
 socket.on('player-left', data => {
