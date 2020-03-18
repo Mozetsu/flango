@@ -168,7 +168,6 @@ io.on('connection', socket => {
 		rooms[i].data.freeCells = 9;
 		rooms[i].data.playerOne.moves.length = 0;
 		rooms[i].data.playerTwo.moves.length = 0;
-		console.log(rooms[i]);
 		io.in(room).emit('restart');
 		io.to(room).emit('player-turn', { firstPlayer: rooms[i].data.playing });
 		// console.log(`Room to restart: ${playerRoom}`);

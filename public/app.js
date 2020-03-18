@@ -45,16 +45,17 @@ function pickCell() {
 		player.moves.push(this.id);
 		yourTurnNtf.style.display = 'none';
 		opponentTurnNtf.style.display = 'flex';
+
+		// socket
+		socket.emit('player-action', {
+			room: player.room,
+			username: player.username,
+			description: player.description,
+			moves: player.moves
+		});
+
+		disableGameCells();
 	}
-
-	socket.emit('player-action', {
-		room: player.room,
-		username: player.username,
-		description: player.description,
-		moves: player.moves
-	});
-
-	disableGameCells();
 }
 
 function disableGameCells() {
@@ -76,11 +77,9 @@ function enableGame() {
 
 function endGame(description, score, arr) {
 	// you win
-	if (description === player.description) {
-		playerOneScore.innerText = score;
-	} else {
-		playerTwoScore.innerText = score;
-	}
+	if (description !== 'tie' && description === player.description) playerOneScore.innerText = score;
+	if (description !== 'tie' && description !== player.description) playerTwoScore.innerText = score;
+	if (description === 'tie') tieScore.innerText = score;
 
 	yourTurnNtf.style.display = 'none';
 	opponentTurnNtf.style.display = 'none';
@@ -193,5 +192,7 @@ socket.on('restart', () => {
 socket.on('player-left', data => {
 	console.log(data);
 	player.opponent = undefined;
+	tieScore.innerText = '0';
 	playerTwoName.innerText = 'Player Two';
+	playerTwoScore.innerText = '0';
 });

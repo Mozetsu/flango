@@ -160,7 +160,7 @@ body {
 	display: none;
 	margin-top: 30px;
 	width: 100%;
-	width: var(--game-width);
+	max-width: var(--game-width);
 	height: 50px;
 	border: none;
 	border-radius: 4px;
