@@ -4,43 +4,14 @@ const marks = {
 	circle: 'far fa-circle'
 };
 
-const game = {
-	room: 'DDDD',
-	playerOne: {
-		id: undefined,
-		username: 'Player One',
-		mark: 'times',
-		moves: [],
-		score: 0
-	},
-	playerTwo: {
-		id: undefined,
-		username: 'Player Two',
-		mark: 'circle',
-		moves: [],
-		score: 0
-	}
-};
-
-const winCombinations = [
-	// rows
-	[1, 2, 3],
-	[4, 5, 6],
-	[7, 8, 9],
-	// columns
-	[1, 4, 7],
-	[2, 5, 8],
-	[3, 6, 9],
-	// diagoanl
-	[1, 5, 9],
-	[3, 5, 7]
-];
+const currentRoom = '7314';
 
 // client
 const playerOneName = document.querySelector('.player-one-username');
 const playerOneScore = document.getElementById('player-one-score');
 const playerTwoName = document.querySelector('.player-two-username');
 const playerTwoScore = document.getElementById('player-two-score');
+const tieScore = document.getElementById('tie');
 const gameCellsWrapper = document.querySelector('.grid-wrapper');
 const gameCells = document.querySelectorAll('.cell');
 const notifications = document.querySelector('.turn');
@@ -48,11 +19,12 @@ const restartBtn = document.querySelector('#restart');
 
 gameCells.forEach(cell => cell.addEventListener('click', pickCell));
 restartBtn.addEventListener('click', () => {
-	startGame();
-	socket.emit('restart-game', { room: game.room });
+	socket.emit('restart-game', { room });
 });
 
 function pickCell() {
+	game.freeCells--;
+	console.log(game.freeCells);
 	// add item if empty
 	if (!this.hasChildNodes()) {
 		const tmp = document.createElement('i');
@@ -68,14 +40,26 @@ function pickCell() {
 	}
 }
 
+function checkGameState() {
+	if (game.freeCells === 0) endGame([], undefined);
+}
+
 function checkWin(win, moves, user) {
 	win.forEach(combination => {
 		// win
 		if (arrayContainsArray(combination, moves)) endGame(combination, user);
+		else checkGameState();
 	});
 }
 
 function endGame(arr, usr) {
+	// tie
+	if (!usr) {
+		game.tie++;
+		tieScore.innerText = game.tie;
+		game.freeCells = 9;
+	}
+
 	// user
 	if (usr === game.playerOne.username) {
 		game.playerOne.score++;
@@ -137,18 +121,20 @@ socket.on('connect', () => {
 	const currentPlayer = window.prompt('Enter your Username');
 	playerOneName.innerText = `${currentPlayer}`;
 	playerOneScore.classList.add(currentPlayer);
-	game.playerOne.username = currentPlayer;
+	// game.playerOne.username = currentPlayer;
 
-	socket.emit('create-room', { room: game.room, username: game.playerOne.username });
+	socket.emit('create-room', { playerRoom: currentRoom, username: currentPlayer });
 });
 
-socket.on('room-connection', ({ players }) => {
-	const opponent = players.find(elem => elem !== game.playerOne.username);
-	if (opponent !== undefined) {
-		game.playerTwo.username = opponent;
-		playerTwoName.innerText = opponent;
-		playerTwoScore.classList.add(opponent);
-	}
+socket.on('room-connection', room => {
+	// const opponent = players.find(elem => elem !== game.playerOne.username);
+	// if (opponent !== undefined) {
+	// 	game.playerTwo.username = opponent;
+	// 	playerTwoName.innerText = opponent;
+	// 	playerTwoScore.classList.add(opponent);
+	// }
+	console.log(room);
+	// console.log(`Connected to [${room}]`);
 });
 
 socket.on('player-move', playerObj => {
