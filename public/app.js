@@ -5,14 +5,14 @@ const marks = {
 };
 
 const player = {
+	room: '7314',
 	description: undefined,
 	id: undefined,
 	username: undefined,
 	opponent: undefined,
-	mark: undefined
+	mark: undefined,
+	moves: []
 };
-
-const currentRoom = '7314';
 
 // client
 const playerOneName = document.querySelector('.player-one-username');
@@ -31,32 +31,18 @@ restartBtn.addEventListener('click', () => {
 });
 
 function pickCell() {
-	game.freeCells--;
-	console.log(game.freeCells);
-	// add item if empty
+	// add item if cell is empty
 	if (!this.hasChildNodes()) {
 		const tmp = document.createElement('i');
-		tmp.classList = `${marks[game.playerOne.mark]}`;
+		tmp.classList = `${marks[player.mark]}`;
 		this.appendChild(tmp);
-		game.playerOne.moves.push(this.id);
-		checkWin(winCombinations, game.playerOne.moves, game.playerOne.username);
-		socket.emit('player-action', {
-			room: game.room,
-			username: game.playerOne.username,
-			moves: game.playerOne.moves
-		});
+		player.moves.push(this.id);
 	}
-}
 
-function checkGameState() {
-	if (game.freeCells === 0) endGame([], undefined);
-}
-
-function checkWin(win, moves, user) {
-	win.forEach(combination => {
-		// win
-		if (arrayContainsArray(combination, moves)) endGame(combination, user);
-		else checkGameState();
+	socket.emit('player-action', {
+		room: player.room,
+		username: player.username,
+		moves: player.moves
 	});
 }
 
@@ -113,14 +99,6 @@ function startGame() {
 	});
 }
 
-function arrayContainsArray(arr1, arr2) {
-	const verifyArr = [];
-	arr1.forEach(elem1 => {
-		if (arr2.find(elem2 => elem2 == elem1)) verifyArr.push(elem1);
-	});
-	return verifyArr.length === arr1.length;
-}
-
 // socket
 const socket = io();
 
@@ -130,15 +108,19 @@ socket.on('connect', () => {
 	playerOneName.innerText = `${player.username}`;
 	playerOneScore.classList.add(player.username);
 
-	socket.emit('create-room', { playerRoom: currentRoom, username: player.username });
+	socket.emit('create-room', { playerRoom: player.room, username: player.username });
 });
 
 socket.on('room-connection', ({ room, data }) => {
 	console.log(room);
 	// console.log(data);
-	player.description === 'playerOne'
-		? (player.opponent = data.playerTwo.username)
-		: (player.opponent = data.playerOne.username);
+	if (player.description === 'playerOne') {
+		player.opponent = data.playerTwo.username;
+		player.mark = data.playerOne.mark;
+	} else {
+		player.opponent = data.playerOne.username;
+		player.mark = data.playerTwo.mark;
+	}
 	player.opponent ? (playerTwoName.innerText = player.opponent) : (playerTwoName.innerText = 'Player Two');
 });
 
@@ -147,20 +129,23 @@ socket.on('private', ({ description, id }) => {
 	player.id = id;
 });
 
-socket.on('player-move', playerObj => {
-	const lastMove = playerObj.moves[playerObj.moves.length - 1];
+socket.on('player-move', ({ username, moves }) => {
+	const lastMove = moves[moves.length - 1];
 	const cell = gameCellsWrapper.children[lastMove - 1];
 	const tmp = document.createElement('i');
 
-	// opponent played
-	if (playerObj.username !== game.playerOne.username) {
-		tmp.classList = `${marks[game.playerTwo.mark]}`;
+	// current player played
+	if (username === player.username) {
+		tmp.classList = `${marks[player.mark]}`;
 	} else {
-		tmp.classList = `${marks[game.playerOne.mark]}`;
+		// opponent played
+		const tmpArray = Object.keys(marks);
+		const opponentMark = tmpArray.find(mark => mark !== player.mark);
+		tmp.classList = `${marks[opponentMark]}`;
 	}
 
 	cell.appendChild(tmp);
-	checkWin(winCombinations, playerObj.moves, playerObj.username);
+	// checkWin(winCombinations, playerObj.moves, playerObj.username);
 });
 
 socket.on('restart', () => {

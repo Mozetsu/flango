@@ -121,8 +121,8 @@ io.on('connection', socket => {
 		});
 	});
 
-	socket.on('player-action', ({ playerRoom, username, moves }) => {
-		socket.broadcast.to(playerRoom).emit('player-move', { username, moves });
+	socket.on('player-action', ({ room, username, moves }) => {
+		socket.broadcast.to(room).emit('player-move', { username, moves });
 	});
 
 	socket.on('restart-game', ({ playerRoom }) => {
