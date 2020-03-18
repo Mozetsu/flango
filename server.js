@@ -18,39 +18,88 @@ app.get('/', (req, res) => {
 // console.log(winCombinations);
 // console.log(room);
 
-const rooms = [];
+const rooms = [
+	{
+		room: '9730',
+		data: {
+			tie: 0,
+			freeCells: 9,
+			players: 0,
+			playerOne: {
+				id: 93184719327419,
+				username: 'Mozetsu',
+				mark: 'times',
+				moves: [],
+				score: 0
+			},
+			playerTwo: {
+				id: 93187719327419,
+				username: 'Ainz',
+				mark: 'circle',
+				moves: [],
+				score: 0
+			}
+		}
+	}
+];
 
 const getRoomIndex = (serverRooms, currentRoom) => {
 	return serverRooms.findIndex(serverRoom => serverRoom['room'] === currentRoom);
 };
 
+const populatePlayer = (room, increment, id, username, player) => {
+	increment ? room.data.players++ : room.data.players--;
+	room.data[player].id = id;
+	room.data[player].username = username;
+};
+
+const removePlayer = playerId => {
+	// console.log(playerId);
+	rooms.forEach(room => {
+		// if player is player one
+		if (playerId === room.data.playerOne.id) {
+			console.log(`Server: ${room.data.playerOne.username} left [${room.room}]`);
+			populatePlayer(room, undefined, undefined, undefined, 'playerOne');
+		}
+
+		// if player is player two
+		if (playerId === room.data.playerTwo.id) {
+			console.log(`Server: ${room.data.playerTwo.username} left [${room.room}]`);
+			populatePlayer(room, undefined, undefined, undefined, 'playerTwo');
+		}
+	});
+};
+
 const addRoom = (serverRooms, roomName, username, userId) => {
 	// find room index
 	const roomIndex = getRoomIndex(serverRooms, roomName);
-	// console.log(roomIndex);
+
 	// check if room is full
 	if (roomIndex !== -1) {
 		if (serverRooms[roomIndex].data.players === 2) return { error: 'Room is full' };
 	}
-	// console.log(rooms);
-	// console.log(roomIndex);
 
 	// add room if it doesnt exist
+	// and populate player one
 	if (roomIndex === -1) {
 		rooms.push({ room: roomName, data });
 		const currentRoom = getRoomIndex(serverRooms, roomName);
 		// populate player one data
-		serverRooms[currentRoom].data.players++;
-		serverRooms[currentRoom].data.playerOne.id = userId;
-		serverRooms[currentRoom].data.playerOne.username = username;
-		console.log(serverRooms[currentRoom]);
+		populatePlayer(serverRooms[currentRoom], 1, userId, username, 'playerOne');
+		console.log(`Server: ${username} joined [${roomName}]`);
 	} else {
-		const currentRoom = getRoomIndex(serverRooms, roomName);
-		// populate player two data
-		serverRooms[currentRoom].data.players++;
-		serverRooms[currentRoom].data.playerTwo.id = userId;
-		serverRooms[currentRoom].data.playerTwo.username = username;
-		console.log(serverRooms[currentRoom]);
+		//if room exists search for empty player
+		const i = getRoomIndex(serverRooms, roomName);
+
+		// player one empty
+		if (!serverRooms[i].data.playerOne.username) {
+			populatePlayer(serverRooms[i], 1, userId, username, 'playerOne');
+			console.log(`Server: ${username} joined [${serverRooms[i].room}]`);
+		} else {
+			// player two empty
+			populatePlayer(serverRooms[i], 1, userId, username, 'playerTwo');
+			console.log(`Server: ${username} joined [${serverRooms[i].room}]`);
+		}
 	}
 };
 
@@ -77,7 +126,8 @@ io.on('connection', socket => {
 	});
 
 	socket.on('disconnect', () => {
-		console.log('Player disconnected');
+		removePlayer(socket.id);
+		// console.log('Player disconnected');
 	});
 });
 

@@ -18,18 +18,20 @@ const room = {
 	players: 0,
 	playerOne: {
 		id: undefined,
-		username: 'Player One',
+		username: undefined,
 		mark: 'times',
 		moves: [],
 		score: 0
 	},
 	playerTwo: {
 		id: undefined,
-		username: 'Player Two',
+		username: undefined,
 		mark: 'circle',
 		moves: [],
 		score: 0
 	}
 };
+
+
 
 module.exports = { winCombinations, room };
