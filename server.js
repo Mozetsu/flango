@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
 	res.render('game');
 });
 
-
 const rooms = [
 	{
 		room: '9730',

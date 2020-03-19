@@ -46,6 +46,8 @@ function pickCell() {
 		this.appendChild(tmp);
 		player.moves.push(this.id);
 
+		disableGame();
+
 		// socket
 		socket.emit('player-action', {
 			room: player.room,
