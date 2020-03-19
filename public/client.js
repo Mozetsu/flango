@@ -132,8 +132,6 @@ socket.on('connect', () => {
 	playerOneName.innerText = `${player.username}`;
 	playerOneScore.classList.add(player.username);
 
-	disableGame();
-
 	socket.emit('create-room', { playerRoom: player.room, username: player.username });
 });
 
