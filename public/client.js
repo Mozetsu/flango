@@ -86,6 +86,7 @@ function endGame(description, score, arr, playerLeft) {
 
 	yourTurnNtf.style.display = 'none';
 	opponentTurnNtf.style.display = 'none';
+	restartBtn.style.display = 'none';
 
 	playerLeft ? (opponentTurnNtf.style.display = 'flex') : (restartBtn.style.display = 'inline');
 
