@@ -168,7 +168,7 @@ body {
 }
 
 .waiting {
-	display: none;
+	display: flex;
 	color: var(--player-two-color-light);
 	background-color: var(--player-two-highlight);
 }

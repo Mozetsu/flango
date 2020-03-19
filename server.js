@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
 	res.render('game');
 });
 
-// console.log(winCombinations);
 
 const rooms = [
 	{

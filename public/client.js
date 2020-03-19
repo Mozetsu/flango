@@ -45,8 +45,6 @@ function pickCell() {
 		tmp.classList = `${marks[player.mark]}`;
 		this.appendChild(tmp);
 		player.moves.push(this.id);
-		yourTurnNtf.style.display = 'none';
-		opponentTurnNtf.style.display = 'flex';
 
 		// socket
 		socket.emit('player-action', {
@@ -55,14 +53,12 @@ function pickCell() {
 			description: player.description,
 			moves: player.moves
 		});
-
-		disableGame();
 	}
 }
 
 function disableGame() {
-	yourTurnNtf.style.display = 'none';
 	opponentTurnNtf.style.display = 'flex';
+	yourTurnNtf.style.display = 'none';
 	gameCells.forEach(cell => {
 		cell.removeEventListener('click', pickCell);
 		cell.style.cursor = 'auto';
@@ -70,8 +66,8 @@ function disableGame() {
 }
 
 function enableGame() {
-	opponentTurnNtf.style.display = 'none';
 	yourTurnNtf.style.display = 'flex';
+	opponentTurnNtf.style.display = 'none';
 	gameCells.forEach(cell => {
 		cell.addEventListener('click', pickCell);
 		cell.style.cursor = 'pointer';
@@ -88,7 +84,6 @@ function endGame(description, score, arr, playerLeft) {
 
 	if (!description) playerTwoScore.innerText = 0;
 
-	restartBtn.style.display = 'none';
 	yourTurnNtf.style.display = 'none';
 	opponentTurnNtf.style.display = 'none';
 
@@ -136,7 +131,7 @@ socket.on('connect', () => {
 
 	playerOneName.innerText = `${player.username}`;
 	playerOneScore.classList.add(player.username);
-	
+
 	disableGame();
 
 	socket.emit('create-room', { playerRoom: player.room, username: player.username });
@@ -166,11 +161,15 @@ socket.on('private', ({ description, id }) => {
 	player.id = id;
 });
 
+function test() {
+	yourTurnNtf.style.display = 'none';
+	opponentTurnNtf.style.display = 'none';
+	restartBtn.style.display = 'inline';
+}
+
 socket.on('player-turn', ({ firstPlayer }) => {
-	if (!player.isEnd) {
-		if (firstPlayer === player.description) enableGame();
-		else disableGame();
-	}
+	if (!player.isEnd && firstPlayer === player.description) enableGame();
+	if (!player.isEnd && firstPlayer !== player.description) disableGame();
 });
 
 socket.on('player-move', ({ username, moves }) => {
@@ -192,7 +191,10 @@ socket.on('player-move', ({ username, moves }) => {
 
 	cell.appendChild(tmp);
 
-	if (!player.isEnd) socket.emit('next-turn', { room: player.room });
+	if (!player.isEnd) {
+		socket.emit('next-turn', { room: player.room });
+		disableGame();
+	}
 });
 
 socket.on('game-end', ({ description, score, arr }) => {
