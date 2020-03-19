@@ -62,12 +62,14 @@ body {
 .scoreboard .player-one {
 	height: 40px;
 	padding: 10px;
+	color: var(--player-one-color-light);
 	background-color: var(--player-one-highlight);
 }
 
 .scoreboard .player-two {
 	height: 40px;
 	padding: 10px;
+	color: var(--player-two-color-light);
 	background-color: var(--player-two-highlight);
 }
 

@@ -55,6 +55,10 @@ const populatePlayer = (room, increment, id, username, player) => {
 };
 
 const resetOpponent = (room, player) => {
+	room.data.tie = 0;
+	room.data.freeCells = 9;
+	room.data.playing = undefined;
+
 	if (player === 'playerOne') {
 		room.data.playerTwo.moves.length = 0;
 		room.data.playerTwo.score = 0;

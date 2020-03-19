@@ -90,6 +90,7 @@ function endGame(description, score, arr, playerLeft) {
 
 	if (!description) playerTwoScore.innerText = 0;
 
+	restartBtn.style.display = 'none';
 	yourTurnNtf.style.display = 'none';
 	opponentTurnNtf.style.display = 'none';
 
@@ -140,6 +141,8 @@ socket.on('connect', () => {
 });
 
 socket.on('room-connection', ({ room, data }) => {
+	player.isEnd = false;
+
 	if (player.description === 'playerOne') {
 		player.opponent = data.playerTwo.username;
 		player.mark = data.playerOne.mark;
@@ -193,7 +196,7 @@ socket.on('player-move', ({ username, moves }) => {
 socket.on('game-end', ({ description, score, arr }) => {
 	console.log('game ended!');
 	player.isEnd = true;
-	endGame(description, score, arr);
+	endGame(description, score, arr, 0);
 });
 
 socket.on('restart', () => {
@@ -203,8 +206,10 @@ socket.on('restart', () => {
 socket.on('player-left', data => {
 	console.log(data);
 	player.opponent = undefined;
-	tieScore.innerText = '0';
+
 	playerTwoName.innerText = 'Player Two';
+	tieScore.innerText = '0';
+	playerOneScore.innerText = '0';
 	playerTwoScore.innerText = '0';
 
 	player.isEnd = true;
