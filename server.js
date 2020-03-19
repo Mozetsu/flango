@@ -54,13 +54,26 @@ const populatePlayer = (room, increment, id, username, player) => {
 	room.data[player].score = 0;
 };
 
+const resetOpponent = (room, player) => {
+	if (player === 'playerOne') {
+		room.data.playerTwo.moves.length = 0;
+		room.data.playerTwo.score = 0;
+	} else {
+		room.data.playerOne.moves.length = 0;
+		room.data.playerOne.score = 0;
+	}
+};
+
 const removePlayer = playerId => {
 	// console.log(playerId);
 	rooms.forEach(room => {
 		// if player is player one
 		if (playerId === room.data.playerOne.id) {
 			console.log(`Server: ${room.data.playerOne.username} left [${room.room}]`);
+			// removes player one
 			populatePlayer(room, undefined, undefined, undefined, 'playerOne');
+			// resets player two
+			resetOpponent(room, 'playerOne');
 			io.to(room.room).emit('player-left', room);
 		}
 
@@ -68,6 +81,8 @@ const removePlayer = playerId => {
 		if (playerId === room.data.playerTwo.id) {
 			console.log(`Server: ${room.data.playerTwo.username} left [${room.room}]`);
 			populatePlayer(room, undefined, undefined, undefined, 'playerTwo');
+			// resets player one
+			resetOpponent(room, 'playerTwo');
 			io.to(room.room).emit('player-left', room);
 		}
 	});

@@ -1,3 +1,8 @@
+twemoji.parse(document.querySelector('.container'), {
+	folder: 'svg',
+	ext: '.svg'
+});
+
 // game()
 const marks = {
 	times: 'fas fa-times',
@@ -75,31 +80,36 @@ function enableGame() {
 	});
 }
 
-function endGame(description, score, arr) {
+function endGame(description, score, arr, playerLeft) {
 	// you win
 	if (description !== 'tie' && description === player.description) playerOneScore.innerText = score;
+	// opponent wins
 	if (description !== 'tie' && description !== player.description) playerTwoScore.innerText = score;
+	// tie
 	if (description === 'tie') tieScore.innerText = score;
+
+	if (!description) playerTwoScore.innerText = 0;
 
 	yourTurnNtf.style.display = 'none';
 	opponentTurnNtf.style.display = 'none';
 
-	restartBtn.style.display = 'inline';
+	playerLeft ? (opponentTurnNtf.style.display = 'flex') : (restartBtn.style.display = 'inline');
 
 	gameCells.forEach(cell => {
 		cell.removeEventListener('click', pickCell);
 		cell.style.cursor = 'auto';
 	});
 
-	arr.forEach(elem => {
-		const cell = document.getElementById(elem);
-		// you win
-		if (cell.classList.contains('playerOne')) {
-			cell.style.background = '#d1eeff';
-		} else {
-			cell.style.background = '#ffd1e7';
-		}
-	});
+	if (arr)
+		arr.forEach(elem => {
+			const cell = document.getElementById(elem);
+			// you win
+			if (cell.classList.contains('playerOne')) {
+				cell.style.background = '#d1eeff';
+			} else {
+				cell.style.background = '#ffd1e7';
+			}
+		});
 }
 
 function restartGame() {
@@ -124,6 +134,7 @@ socket.on('connect', () => {
 	player.username = window.prompt('Enter your Username');
 	playerOneName.innerText = `${player.username}`;
 	playerOneScore.classList.add(player.username);
+	disableGameCells();
 
 	socket.emit('create-room', { playerRoom: player.room, username: player.username });
 });
@@ -195,4 +206,16 @@ socket.on('player-left', data => {
 	tieScore.innerText = '0';
 	playerTwoName.innerText = 'Player Two';
 	playerTwoScore.innerText = '0';
+
+	player.isEnd = true;
+
+	// resets UI
+	gameCells.forEach(cell => {
+		cell.removeEventListener('click', pickCell);
+		cell.innerHTML = '';
+		cell.classList = 'cell';
+		cell.style.background = '#fff';
+	});
+
+	endGame(undefined, undefined, undefined, 1);
 });
