@@ -41,11 +41,9 @@ const parseCharacterTypes = obj => {
 	return types;
 };
 
-const generate = (obj = { characters: 'number, lowercase, uppercase', length: 6 }) => {
+function generate(obj = { characters: 'number, lowercase, uppercase', length: 6 }) {
 	if (!obj.characters) obj.characters = 'number, lowercase, uppercase';
 	if (!obj.length) obj.length = 6;
-
-	console.log(obj);
 
 	// array which will store all random characters
 	const randomChars = [];
@@ -72,4 +70,6 @@ const generate = (obj = { characters: 'number, lowercase, uppercase', length: 6 
 	const parsedString = randomChars.toString().replace(/,/g, '');
 
 	return parsedString;
-};
+}
+
+export default { generate };

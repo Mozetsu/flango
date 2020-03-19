@@ -1,9 +1,5 @@
-twemoji.parse(document.querySelector('.container'), {
-	folder: 'svg',
-	ext: '.svg'
-});
+import ministring from './js/ministring.js';
 
-// game()
 const marks = {
 	times: 'fas fa-times',
 	circle: 'far fa-circle'
@@ -20,6 +16,11 @@ const player = {
 	isEnd: false
 };
 
+// twemoji.parse(document.querySelector('.container'), {
+// 	folder: 'svg',
+// 	ext: '.svg'
+// });
+
 // scoreboard
 const playerOneName = document.querySelector('.player-one-username');
 const playerOneScore = document.getElementById('player-one-score');
@@ -35,10 +36,6 @@ const gameCells = document.querySelectorAll('.cell');
 const yourTurnNtf = document.querySelector('.your-turn');
 const opponentTurnNtf = document.querySelector('.waiting-opponent');
 const restartBtn = document.querySelector('#restart');
-
-restartBtn.addEventListener('click', () => {
-	socket.emit('restart-game', { room: player.room });
-});
 
 function pickCell() {
 	// add item if cell is empty
@@ -126,6 +123,10 @@ function restartGame() {
 		cell.style.cursor = 'pointer';
 	});
 }
+
+restartBtn.addEventListener('click', () => {
+	socket.emit('restart-game', { room: player.room });
+});
 
 // socket
 const socket = io();
