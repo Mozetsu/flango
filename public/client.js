@@ -133,7 +133,10 @@ const socket = io();
 
 socket.on('connect', () => {
 	// client
-	player.username = window.prompt('Enter your Username');
+	const userInput = window.prompt('Enter your Username');
+
+	player.username = userInput.replace(/\s/g, '');
+
 	playerOneName.innerText = `${player.username}`;
 	playerOneScore.classList.add(player.username);
 	disableGameCells();
@@ -191,7 +194,7 @@ socket.on('player-move', ({ username, moves }) => {
 
 	cell.appendChild(tmp);
 
-	socket.emit('next-turn', { room: player.room });
+	if (!player.isEnd) socket.emit('next-turn', { room: player.room });
 });
 
 socket.on('game-end', ({ description, score, arr }) => {
