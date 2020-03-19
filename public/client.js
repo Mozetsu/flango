@@ -56,24 +56,25 @@ function pickCell() {
 			moves: player.moves
 		});
 
-		disableGameCells();
+		disableGame();
 	}
 }
 
-function disableGameCells() {
+function disableGame() {
+	yourTurnNtf.style.display = 'none';
+	opponentTurnNtf.style.display = 'flex';
 	gameCells.forEach(cell => {
 		cell.removeEventListener('click', pickCell);
 		cell.style.cursor = 'auto';
-		opponentTurnNtf.style.display = 'flex';
 	});
 }
 
 function enableGame() {
+	opponentTurnNtf.style.display = 'none';
+	yourTurnNtf.style.display = 'flex';
 	gameCells.forEach(cell => {
 		cell.addEventListener('click', pickCell);
 		cell.style.cursor = 'pointer';
-		yourTurnNtf.style.display = 'flex';
-		opponentTurnNtf.style.display = 'none';
 	});
 }
 
@@ -98,20 +99,17 @@ function endGame(description, score, arr, playerLeft) {
 		cell.style.cursor = 'auto';
 	});
 
-	if (arr)
-		arr.forEach(elem => {
-			const cell = document.getElementById(elem);
-			// you win
-			if (cell.classList.contains('playerOne')) {
-				cell.style.background = '#d1eeff';
-			} else {
-				cell.style.background = '#ffd1e7';
-			}
+	if (arr) {
+		arr.forEach(i => {
+			const cell = document.getElementById(i);
+			cell.classList.contains('playerOne') ? (cell.style.background = '#d1eeff') : (cell.style.background = '#ffd1e7');
 		});
+	}
 }
 
 function restartGame() {
 	player.isEnd = false;
+
 	restartBtn.style.display = 'none';
 
 	// resets UI
@@ -120,7 +118,6 @@ function restartGame() {
 		cell.innerHTML = '';
 		cell.classList = 'cell';
 		cell.style.background = '#fff';
-		cell.style.cursor = 'pointer';
 	});
 }
 
@@ -139,7 +136,8 @@ socket.on('connect', () => {
 
 	playerOneName.innerText = `${player.username}`;
 	playerOneScore.classList.add(player.username);
-	disableGameCells();
+	
+	disableGame();
 
 	socket.emit('create-room', { playerRoom: player.room, username: player.username });
 });
@@ -171,7 +169,7 @@ socket.on('private', ({ description, id }) => {
 socket.on('player-turn', ({ firstPlayer }) => {
 	if (!player.isEnd) {
 		if (firstPlayer === player.description) enableGame();
-		else disableGameCells();
+		else disableGame();
 	}
 });
 
