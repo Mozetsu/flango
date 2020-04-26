@@ -1,0 +1,12 @@
+.notification {
+	font-size: 24px;
+	font-weight: bold;
+	width: var(--board-width);
+	height: 45px;
+	border: none;
+	color: var(--bc);
+	background-color: var(--player-one-secondary);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

@@ -1,0 +1,17 @@
+.scoreboard {
+	width: var(--board-width);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.scoreboard .player {
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.scoreboard .player .username {
+	margin: 0 5px;
+}

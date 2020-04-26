@@ -1,0 +1,53 @@
+#dropdown {
+	width: 130px;
+	height: 130px;
+	position: absolute;
+	top: 30px;
+	background-color: var(--bc);
+	border-radius: 3px;
+
+	transform: translateX(-5%);
+	box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.12);
+	opacity: 0;
+	z-index: 2;
+	pointer-events: none;
+	transition: opacity 0.3s ease-in;
+	cursor: default;
+}
+
+#emojis {
+	padding: 5px;
+	list-style: none;
+	display: grid;
+	grid-template-rows: repeat(3, 40px);
+	grid-template-columns: repeat(3, 40px);
+}
+
+.scoreboard .player:focus-within #dropdown {
+	opacity: 1;
+	pointer-events: auto;
+	cursor: default;
+}
+
+.scoreboard .player:focus-within #dropdown li img {
+	pointer-events: auto;
+	cursor: pointer;
+}
+
+#dropdown li {
+	margin: 5px;
+}
+
+#leave-btn {
+	margin-top: 10px;
+	width: 130px;
+	height: 40px;
+	background-color: rgb(255, 103, 103);
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 3px;
+	font-weight: bold;
+	cursor: pointer;
+}
