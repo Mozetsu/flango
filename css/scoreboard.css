@@ -3,15 +3,23 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	font-family: var(--font);
+	color: var(--secondary);
 }
 
-.scoreboard .player {
-	position: relative;
+.scoreboard .data {
 	display: flex;
-	justify-content: flex-start;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }
 
-.scoreboard .player .username {
-	margin: 0 5px;
+.scoreboard .data .username {
+	margin-bottom: 5px;
+	font-size: 12px;
+}
+
+.scoreboard .data .score {
+	font-size: 20px;
+	font-weight: 900;
 }

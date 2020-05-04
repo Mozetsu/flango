@@ -5,46 +5,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>T3</title>
 		<link rel="stylesheet" href="style.css" />
-		<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 		<script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script> -->
 		<script defer type="module" src="client.js"></script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="scoreboard">
-				<div class="player player-one">
-					<a href="#">
-						<i class="fas fa-angle-down"></i>
-						<p class="username">player_one</p>
-						<p class="score">0</p>
-						<div id="dropdown">
-							<ul id="emojis">
-								<li><img src="./svg/emojis/1f602.svg" /></li>
-								<li><img src="./svg/emojis/1f605.svg" /></li>
-								<li><img src="./svg/emojis/1f61d.svg" /></li>
-								<li><img src="./svg/emojis/1f625.svg" /></li>
-								<li><img src="./svg/emojis/1f624.svg" /></li>
-								<li><img src="./svg/emojis/1f621.svg" /></li>
-								<li><img src="./svg/emojis/1f91d.svg" /></li>
-								<li><img src="./svg/emojis/270c.svg" /></li>
-								<li><img src="./svg/emojis/1f44f.svg" /></li>
-							</ul>
-							<div id="leave-btn">
-								<p>#F31CSR</p>
-							</div>
-						</div>
-					</a>
+				<div class="data player-one">
+					<div class="username">PLAYER ONE (X)</div>
+					<div class="score">2</div>
 				</div>
-				<div class="player tie">
-					<p class="username">tie</p>
-					<p class="score">0</p>
+				<div class="data tie">
+					<div class="username">TIE</div>
+					<div class="score">5</div>
 				</div>
-				<div class="player player-two">
-					<p class="username">player_two</p>
-					<p class="score">0</p>
+				<div class="data player-two">
+					<div class="username">PLAYER TWO (O)</div>
+					<div class="score">1</div>
 				</div>
 			</div>
-			<ul class="game-board">
+			<ul class="gameboard">
 				<li class="tile 1">
 					<svg width="137" height="137" viewBox="0 0 137 137" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<circle cx="68.5" cy="68.5" r="51" stroke="var(--player-two-primary)" stroke-width="25" />
@@ -63,9 +44,32 @@
 				<li class="tile 8"></li>
 				<li class="tile 9"></li>
 			</ul>
-			<div class="notification">
-				<p>Your turn</p>
+			<div class="tapbar">
+				<div class="tap-container">
+					<div class="tap-btn">
+						<div class="leave-btn"><img src="./svg/leave-btn.svg" /></div>
+					</div>
+					<div class="tap-btn">
+						<a class="emoji-link" href="#">
+							<div class="emoji-btn">
+								<img src="./svg/emojis/1f600.svg" />
+								<ul id="emoji-palette">
+									<li class="emoji"><img src="./svg/emojis/1f602.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/1f605.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/1f61d.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/1f625.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/1f624.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/1f621.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/1f91d.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/270c.svg" /></li>
+									<li class="emoji"><img src="./svg/emojis/1f44f.svg" /></li>
+								</ul>
+							</div>
+						</a>
+					</div>
+				</div>
 			</div>
+			<div id="particles-js"></div>
 		</div>
 	</body>
 </html>

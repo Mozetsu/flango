@@ -1,44 +1,40 @@
-#dropdown {
+#emoji-palette {
+	position: absolute;
 	width: 130px;
 	height: 130px;
-	position: absolute;
-	top: 30px;
 	background-color: var(--bc);
 	border-radius: 3px;
 
-	transform: translateX(-5%);
+	display: grid;
+	grid-template-rows: repeat(3, 40px);
+	grid-template-columns: repeat(3, 40px);
+
+	transform: translate(-35%, -140%);
 	box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.12);
 	opacity: 0;
 	z-index: 2;
 	pointer-events: none;
-	transition: opacity 0.3s ease-in;
+	transition: opacity 0.2s ease-in;
 	cursor: default;
 }
 
-#emojis {
+.emoji {
 	padding: 5px;
 	list-style: none;
-	display: grid;
-	grid-template-rows: repeat(3, 40px);
-	grid-template-columns: repeat(3, 40px);
 }
 
-.scoreboard .player:focus-within #dropdown {
+.tap-btn:focus-within #emoji-palette {
 	opacity: 1;
 	pointer-events: auto;
 	cursor: default;
 }
 
-.scoreboard .player:focus-within #dropdown li img {
+.tap-btn:focus-within #emoji-palette li img {
 	pointer-events: auto;
 	cursor: pointer;
 }
 
-#dropdown li {
-	margin: 5px;
-}
-
-#leave-btn {
+/* #leave-btn {
 	margin-top: 10px;
 	width: 130px;
 	height: 40px;
@@ -50,4 +46,4 @@
 	border-radius: 3px;
 	font-weight: bold;
 	cursor: pointer;
-}
+} */
