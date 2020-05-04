@@ -1,5 +1,6 @@
 #emoji-palette {
 	position: absolute;
+	padding: 5px;
 	width: 130px;
 	height: 130px;
 	background-color: var(--bc);
@@ -10,7 +11,7 @@
 	grid-template-columns: repeat(3, 40px);
 
 	transform: translate(-35%, -140%);
-	box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.12);
 	opacity: 0;
 	z-index: 2;
 	pointer-events: none;

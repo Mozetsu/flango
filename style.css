@@ -40,14 +40,28 @@ ul {
 	list-style: none;
 }
 
-.container {
-	padding: 100px;
-	background-color: var(--bc);
+body {
 	width: 100vw;
 	height: 100vh;
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 15px;
+	background-color: var(--bc);
+	/* width: 100vw; */
+	border: 5px solid var(--secondary);
+	width: 600px;
+	height: 600px;
+	/* height: 100vh; */
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
 	font-family: var(--font);
 }

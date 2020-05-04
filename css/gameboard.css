@@ -1,6 +1,6 @@
 .gameboard {
-	margin-top: 120px;
 	position: relative;
+	top: 20px;
 	width: 100%;
 	max-width: var(--board-width);
 	height: 100%;
@@ -32,6 +32,7 @@
 .tile:nth-child(7),
 .tile:nth-child(9) {
 	border: none;
+	border-radius: 3px;
 }
 
 .tile:nth-child(2),

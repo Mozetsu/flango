@@ -1,8 +1,9 @@
 .tapbar {
-	position: fixed;
-	bottom: 0;
-	width: 100vw;
+	position: relative;
+	top: 42px;
+	width: var(--board-width);
 	height: 50px;
+	border-radius: 3px;
 	background-color: var(--secondary);
 	display: flex;
 	justify-content: center;
