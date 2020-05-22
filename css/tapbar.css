@@ -26,6 +26,12 @@
 	align-items: center;
 }
 
+.tapbar .tap-container .tap-btn .leave-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .tapbar .tap-container .tap-btn .emoji-btn {
 	width: 30px;
 	height: 30px;

@@ -47,13 +47,23 @@
 			<div class="tapbar">
 				<div class="tap-container">
 					<div class="tap-btn">
-						<div class="leave-btn"><img src="./svg/leave-btn.svg" /></div>
+						<a class="emoji-link" href="#">
+							<img src="./svg/leave-btn.svg" />
+							<div id="leave-card">
+								<p class="leave-card-item">Confirm action</p>
+								<p class="leave-card-item">Are you sure you want to leave <span>#KDPW2</span>?</p>
+								<div class="leave-card-buttons">
+									<button id="leave-card-cancel-btn" class="leave-card-item">cancel</button>
+									<button id="leave-card-leave-btn" class="leave-card-item">Leave</button>
+								</div>
+							</div>
+						</a>
 					</div>
 					<div class="tap-btn">
 						<a class="emoji-link" href="#">
 							<div class="emoji-btn">
 								<img src="./svg/emojis/1f600.svg" />
-								<ul id="emoji-palette">
+								<ul id="emoji-card">
 									<li class="emoji"><img src="./svg/emojis/1f602.svg" /></li>
 									<li class="emoji"><img src="./svg/emojis/1f605.svg" /></li>
 									<li class="emoji"><img src="./svg/emojis/1f61d.svg" /></li>
