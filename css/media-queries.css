@@ -1,0 +1,63 @@
+@media only screen and (max-width: 410px) {
+	.scoreboard {
+		width: 380px;
+	}
+
+	.game-board {
+		max-width: 380px;
+		max-height: 380px;
+	}
+
+	.tile svg {
+		width: 60px;
+	}
+
+	.notification {
+		width: 380px;
+	}
+}
+
+@media only screen and (max-width: 375px) {
+	.game-board {
+		max-width: 350px;
+		max-height: 350px;
+	}
+}
+
+@media only screen and (max-width: 360px) {
+	.scoreboard {
+		width: 320px;
+	}
+
+	.game-board {
+		max-width: 320px;
+		max-height: 320px;
+	}
+
+	.tile svg {
+		width: 60px;
+	}
+
+	.notification {
+		width: 320px;
+	}
+}
+
+@media only screen and (max-width: 320px) {
+	.scoreboard {
+		width: 280px;
+	}
+
+	.game-board {
+		max-width: 280px;
+		max-height: 280px;
+	}
+
+	.tile svg {
+		width: 50px;
+	}
+
+	.notification {
+		width: 280px;
+	}
+}

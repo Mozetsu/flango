@@ -1,0 +1,44 @@
+.tapbar {
+	position: relative;
+	top: 42px;
+	width: var(--board-width);
+	height: 50px;
+	border-radius: 3px;
+	background-color: var(--secondary);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tapbar .tap-container {
+	width: var(--board-width);
+	height: inherit;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.tapbar .tap-container .tap-btn {
+	height: inherit;
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tapbar .tap-container .tap-btn .fa-door-open {
+	font-size: 26px;
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tapbar .tap-container .tap-btn .room-id {
+	color: #fff;
+}
+
+.tapbar .tap-container .tap-btn .emoji-btn {
+	width: 30px;
+	height: 30px;
+}

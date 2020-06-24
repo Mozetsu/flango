@@ -1,0 +1,53 @@
+.gameboard {
+	position: relative;
+	top: 20px;
+	width: 100%;
+	max-width: var(--board-width);
+	height: 100%;
+	max-height: var(--board-width);
+	display: grid;
+	grid-template-rows: repeat(3, minmax(20px, 1fr));
+	grid-template-columns: repeat(3, minmax(20px, 1fr));
+	list-style: none;
+}
+
+.tile {
+	background-color: var(--tile-bc);
+	border: var(--tile-border);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	cursor: pointer;
+	transition: background-color 0.06s ease-in;
+}
+
+.tile:hover {
+	background-color: var(--tile-hover);
+}
+
+.tile:nth-child(1),
+.tile:nth-child(3),
+.tile:nth-child(7),
+.tile:nth-child(9) {
+	border: none;
+	border-radius: 3px;
+}
+
+.tile:nth-child(2),
+.tile:nth-child(8) {
+	border-top: none;
+	border-bottom: none;
+}
+
+.tile:nth-child(4),
+.tile:nth-child(6) {
+	border-left: none;
+	border-right: none;
+}
+
+.tile svg {
+	width: 60px;
+	animation: popUp 0.25s ease-in-out;
+}

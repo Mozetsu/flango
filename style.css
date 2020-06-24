@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,700;1,400&display=swap');
+
+@import './css/emoji-dropdown.css';
+@import './css/scoreboard.css';
+@import './css/gameboard.css';
+@import './css/tapbar.css';
+@import './css/notification.css';
+@import './css/animations.css';
+@import './css/media-queries.css';
+
+:root {
+	--bc: #ffffff;
+	--tile-bc: #fff;
+	--tile-hover: #f3f3f3;
+	--player-one-primary: #8bc7ff;
+	--player-one-secondary: #add7ff;
+	--player-two-primary: rgb(255, 166, 166);
+	--player-two-secondary: #ffb7b7;
+	--secondary: #666;
+	--tile-border: 3px solid #666;
+	--board-width: 400px;
+	--font: 'Open Sans', sans-serif;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+ul {
+	list-style: none;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 15px;
+	background-color: var(--bc);
+	/* width: 100vw; */
+	border: 5px solid var(--secondary);
+	width: 600px;
+	height: 600px;
+	/* height: 100vh; */
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	font-family: var(--font);
+}
