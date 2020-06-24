@@ -10,7 +10,7 @@
 	grid-template-rows: repeat(3, 40px);
 	grid-template-columns: repeat(3, 40px);
 
-	transform: translate(-35%, -140%);
+	transform: translate(-35%, -145%);
 	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.12);
 	opacity: 0;
 	z-index: 2;
@@ -21,16 +21,16 @@
 
 #leave-card {
 	position: absolute;
-	padding: 5px;
+	padding: 10px;
 	color: var(--secondary);
 	background-color: var(--bc);
-	border-radius: 3px;
+	border-radius: 2px;
 
 	display: flex;
 	flex-direction: column;
 
-	transform: translate(-41%, -83%);
-	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.12);
+	transform: translate(-42%, -83%);
+	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.1);
 	opacity: 0;
 	z-index: 2;
 	pointer-events: none;
@@ -43,32 +43,21 @@
 .leave-card-item:nth-child(2) {
 	margin-top: 5px;
 	text-align: center;
-	font-size: 10px;
+	font-size: 12px;
+	font-weight: 400;
 }
 
 .leave-card-buttons {
 	width: 100%;
-	margin-top: 20px;
 	display: flex;
 	justify-content: space-evenly;
 }
 
 .leave-card-buttons button:nth-child(1) {
-	width: 80px;
-	height: 30px;
-	background-color: transparent;
-	color: var(--secondary);
-	border: none;
-	border-radius: 3px;
-	font-size: 16px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-}
-.leave-card-buttons button:nth-child(2) {
-	width: 80px;
-	background-color: rgb(255, 103, 103);
+	margin-top: 20px;
+	padding: 7px;
+	width: 100%;
+	background-color: rgb(255, 125, 125);
 	color: #fff;
 	border: none;
 	border-radius: 3px;

@@ -26,10 +26,16 @@
 	align-items: center;
 }
 
-.tapbar .tap-container .tap-btn .leave-btn {
+.tapbar .tap-container .tap-btn .fa-door-open {
+	font-size: 26px;
+	color: #fff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.tapbar .tap-container .tap-btn .room-id {
+	color: #fff;
 }
 
 .tapbar .tap-container .tap-btn .emoji-btn {
