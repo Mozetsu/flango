@@ -8,6 +8,7 @@
 }
 
 .scoreboard .data {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -17,9 +18,11 @@
 .scoreboard .data .username {
 	margin-bottom: 5px;
 	font-size: 12px;
+	z-index: 1;
 }
 
 .scoreboard .data .score {
 	font-size: 20px;
 	font-weight: 900;
+	z-index: 1;
 }
