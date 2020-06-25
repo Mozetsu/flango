@@ -26,3 +26,24 @@
 	font-weight: 900;
 	z-index: 1;
 }
+
+.scoreboard .data .react {
+	position: absolute;
+	background-color: rgb(255, 255, 255);
+	transform: translateY(80%);
+	width: 80px;
+	height: 80px;
+	border-radius: 2px;
+	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .3s ease-in-out;
+}
+
+.scoreboard .data .react img {
+	width: 40px;
+}

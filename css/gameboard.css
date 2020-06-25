@@ -51,3 +51,11 @@
 	width: 60px;
 	animation: popUp 0.25s ease-in-out;
 }
+
+.playerOne-win {
+	background-color: var(--playerOne-secondary);
+}
+
+.playerTwo-win {
+	background-color: var(--playerTwo-secondary);
+}
