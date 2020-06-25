@@ -6,6 +6,7 @@ export class Player {
 		this.room = room._id;
 		this.username = usr;
 		this.mark = mark;
+		this.opponent = null;
 		this.moves = [];
 	}
 }
