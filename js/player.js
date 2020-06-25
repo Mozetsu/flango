@@ -1,15 +1,24 @@
-import { Game } from './game.js';
+import { ministring } from './ministring.js';
 
 export class Player {
-	constructor() {
-		this.id = undefined;
-		this.username = undefined;
-		this.mark = undefined;
+	constructor(usr, room, mark) {
+		this._id = ministring(16, 'numbers');
+		this.room = room._id;
+		this.username = usr;
+		this.mark = mark;
 		this.moves = [];
-		this.score = 0;
 	}
 
-	pickTile(tile) {
-		if (!tile.hasChildNodes()) tile.innerHTML = Game.cross;
+	click(room, tile) {
+		const pos = parseInt(tile.classList[1]);
+		// if position is allowed and not played before
+		if (room.allowedPositions.includes(pos) && !this.moves.includes(pos)) {
+			// find elem index and removes it
+			const i = room.allowedPositions.findIndex((e) => e === pos);
+			room.allowedPositions.splice(i, 1);
+			this.moves.push(pos);
+			this.moves.sort();
+			tile.innerHTML = this.mark;
+		}
 	}
 }

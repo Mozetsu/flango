@@ -5,7 +5,7 @@
 	height: 45px;
 	border: none;
 	color: var(--bc);
-	background-color: var(--player-one-secondary);
+	background-color: var(--playerOne-secondary);
 	display: flex;
 	justify-content: center;
 	align-items: center;

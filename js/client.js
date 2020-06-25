@@ -1,11 +1,13 @@
-import { Game } from './game.js';
-import { Player } from './player.js';
+import { Room } from './room.js';
 
-const playerOne = new Player();
+const room = new Room('Mozetsu');
+console.log(room);
+
+document.querySelector('.room-id').innerHTML = room._id;
 
 const tiles = document.querySelectorAll('.tile');
 tiles.forEach((t) =>
 	t.addEventListener('click', function () {
-		playerOne.pickTile(this);
+		room.playerOne.click(room, this);
 	})
 );

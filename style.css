@@ -12,10 +12,10 @@
 	--bc: #ffffff;
 	--tile-bc: #fff;
 	--tile-hover: #f3f3f3;
-	--player-one-primary: #8bc7ff;
-	--player-one-secondary: #add7ff;
-	--player-two-primary: rgb(255, 166, 166);
-	--player-two-secondary: #ffb7b7;
+	--playerOne-primary: #8bc7ff;
+	--playerOne-secondary: #add7ff;
+	--playerTwo-primary: rgb(255, 166, 166);
+	--playerTwo-secondary: #ffb7b7;
 	--secondary: #666;
 	--tile-border: 3px solid #666;
 	--board-width: 400px;
