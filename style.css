@@ -16,6 +16,7 @@
 	--playerOne-secondary: #e6f3ff;
 	--playerTwo-primary: #ffa6a6;
 	--playerTwo-secondary: #ffe6e6;
+	--doodles-stroke: #858585;
 	--secondary: #666;
 	--tile-border: 3px solid #666;
 	--border-radius: 3px;
@@ -42,6 +43,7 @@ ul {
 }
 
 body {
+	background-image: url('./svg/doodles/doodles.svg');
 	width: 100vw;
 	height: 100vh;
 	display: flex;
