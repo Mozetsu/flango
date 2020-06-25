@@ -13,9 +13,9 @@
 	--tile-bc: #fff;
 	--tile-hover: #f3f3f3;
 	--playerOne-primary: #9bcfff;
-	--playerOne-secondary: #e6f3ff;
+	--playerOne-secondary: #eaf5ff;
 	--playerTwo-primary: #ffa6a6;
-	--playerTwo-secondary: #ffe6e6;
+	--playerTwo-secondary: #ffebeb;
 	--doodles-stroke: #858585;
 	--secondary: #666;
 	--tile-border: 3px solid #666;
@@ -53,6 +53,7 @@ body {
 }
 
 .container {
+	position: relative;
 	margin: 0 auto;
 	padding: 15px;
 	background-color: var(--bc);
