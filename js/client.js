@@ -23,3 +23,11 @@ emojis.forEach((e) =>
 		react(this);
 	})
 );
+
+const restartBtn = document.querySelector('.restart');
+restartBtn.addEventListener('click', () => {
+	room.playerOne.moves.length = 0;
+	room.allowedPositions.length = 0;
+	room.allowedPositions.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
+	enableGame(selectTile);
+});

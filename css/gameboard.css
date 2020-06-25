@@ -32,7 +32,7 @@
 .tile:nth-child(7),
 .tile:nth-child(9) {
 	border: none;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 }
 
 .tile:nth-child(2),

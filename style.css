@@ -18,7 +18,8 @@
 	--playerTwo-secondary: #ffe6e6;
 	--secondary: #666;
 	--tile-border: 3px solid #666;
-	--board-width: 400px;
+	--border-radius: 3px;
+	--board-width: 350px;
 	--font: 'Open Sans', sans-serif;
 }
 
@@ -58,7 +59,7 @@ body {
 	width: 600px;
 	height: 600px;
 	/* height: 100vh; */
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

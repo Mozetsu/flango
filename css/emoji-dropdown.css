@@ -4,7 +4,7 @@
 	width: 130px;
 	height: 130px;
 	background-color: var(--bc);
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 
 	display: grid;
 	grid-template-rows: repeat(3, 40px);
@@ -24,7 +24,7 @@
 	padding: 10px;
 	color: var(--secondary);
 	background-color: var(--bc);
-	border-radius: 2px;
+	border-radius: var(--border-radius);
 
 	display: flex;
 	flex-direction: column;
@@ -60,7 +60,7 @@
 	background-color: rgb(255, 125, 125);
 	color: #fff;
 	border: none;
-	border-radius: 3px;
+	border-radius: var(--border-radius);
 	font-size: 16px;
 	display: flex;
 	justify-content: center;

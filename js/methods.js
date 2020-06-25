@@ -1,3 +1,27 @@
+export function enableGame(fn) {
+	document.querySelectorAll('.tile').forEach((t) => {
+		t.innerHTML = '';
+		t.classList.remove(t.classList[2]);
+		t.style.pointerEvents = 'all';
+		t.addEventListener('click', fn);
+	});
+
+	const restartBtn = document.querySelector('.restart');
+	restartBtn.style.opacity = 0;
+	restartBtn.style.pointerEvents = 'none';
+}
+
+export function disableGame(fn) {
+	document.querySelectorAll('.tile').forEach((t) => {
+		t.style.pointerEvents = 'none';
+		t.removeEventListener('click', fn);
+	});
+
+	const restartBtn = document.querySelector('.restart');
+	restartBtn.style.opacity = 1;
+	restartBtn.style.pointerEvents = 'all';
+}
+
 export function click(room, tile) {
 	const pos = parseInt(tile.classList[1]);
 	// if position is allowed and not played before
@@ -22,18 +46,4 @@ export function react(emoji) {
 			document.querySelector('.playerOne').children[2].style.opacity = 0;
 		}, 1500);
 	}
-}
-
-export function enableGame(fn) {
-	document.querySelectorAll('.tile').forEach((t) => {
-		t.style.pointerEvents = 'all';
-		t.addEventListener('click', fn);
-	});
-}
-
-export function disableGame(fn) {
-	document.querySelectorAll('.tile').forEach((t) => {
-		t.style.pointerEvents = 'none';
-		t.removeEventListener('click', fn);
-	});
 }
