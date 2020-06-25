@@ -24,6 +24,13 @@ export function react(emoji) {
 	}
 }
 
+export function enableGame(fn) {
+	document.querySelectorAll('.tile').forEach((t) => {
+		t.style.pointerEvents = 'all';
+		t.addEventListener('click', fn);
+	});
+}
+
 export function disableGame(fn) {
 	document.querySelectorAll('.tile').forEach((t) => {
 		t.style.pointerEvents = 'none';

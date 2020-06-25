@@ -64,9 +64,13 @@ export class Room {
 
 	// arr -> win combinations array
 	checkWin(arr, player) {
+		const tmp = [];
 		for (let combination of arr) {
-			if (this.arrayContainsArray(combination, player.moves)) return { _id: player.id, arr: combination };
+			if (this.arrayContainsArray(combination, player.moves)) {
+				tmp.push(...combination);
+			}
 		}
-		return false;
+		const parsedArr = [...new Set(tmp)]; // removes duplicates
+		return { _id: player.id, arr: parsedArr };
 	}
 }
