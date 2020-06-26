@@ -1,7 +1,9 @@
 import { Room } from './room.js';
 import { click, react, enableGame, disableGame, setupScoreboard, playerJoined, playerLeft } from './game.js';
+import { Player } from './player.js';
 
 const room = new Room('MOZETSU');
+const player = new Player('Moz');
 
 setupScoreboard(room);
 
@@ -36,6 +38,11 @@ document.querySelectorAll('.emoji').forEach((e) =>
 const socket = io();
 
 socket.on('connect', () => {
-	// client
-	// const userInput = window.prompt('Enter your Username');
+	socket.emit('player-connected');
+});
+
+socket.on('player-id', ({ _id }) => {
+	console.log(_id);
+	player._id = _id;
+	socket.emit('join-room', { room: player.room, playerId: _id, username: player.username });
 });

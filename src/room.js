@@ -1,8 +1,7 @@
-// import { ministring } from './ministring.js';
-import { Player } from './player.js';
+const Player = require('./player.js');
 
-export class Room {
-	constructor(owner) {
+class Room {
+	constructor(_id, playerId, username) {
 		this.win = [
 			// rows
 			[1, 2, 3],
@@ -17,12 +16,11 @@ export class Room {
 			[3, 5, 7],
 		];
 
-		// this._id = ministring(6, 'numbers, uppercase');
+		this._id = _id;
 
-		// this.allowedPositions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-		this.allowedPositions = [2, 4, 5, 6, 7, 8, 9];
+		this.allowedPositions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-		this.playerOne = new Player(owner, this, this.cross('playerOne'));
+		this.playerOne = new Player(playerId, username, this);
 
 		this.playerTwo = null;
 
@@ -74,3 +72,5 @@ export class Room {
 		return { _id: player.id, arr: parsedArr };
 	}
 }
+
+module.exports = Room;
