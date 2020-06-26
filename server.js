@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
 const hbs = require('express-handlebars');
 
 app.use(express.json());
@@ -16,4 +18,13 @@ app.get('/', function (req, res) {
 	res.render('index');
 });
 
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+// socket
+io.on('connection', (socket) => {
+	console.log(`${socket.id}`);
+
+	socket.on('disconnect', () => {
+		removePlayer(socket.id);
+	});
+});
+
+server.listen(PORT, () => console.log(`Listening on ${PORT}`));

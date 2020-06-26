@@ -31,3 +31,11 @@ document.querySelectorAll('.emoji').forEach((e) =>
 		react(this);
 	})
 );
+
+// socket ######################################################################
+const socket = io();
+
+socket.on('connect', () => {
+	// client
+	// const userInput = window.prompt('Enter your Username');
+});
