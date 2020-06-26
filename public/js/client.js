@@ -1,18 +1,18 @@
-import { marks, selectTile, react, enableGame, setupScoreboard, playerJoined, playerLeft } from './game.js';
+import * as game from './game.js';
 import { Player } from './Player.js';
 
 const socket = io();
 
 const player = new Player(window.prompt('Username').toString().toUpperCase());
 
-setupScoreboard(player);
+game.setupScoreboard(player);
 
 // tiles
 const tiles = document.querySelectorAll('.tile');
 tiles.forEach((t) =>
 	t.addEventListener('click', function () {
-		socket.emit('player-action', { action: 'select_tile', tile: this.classList[1] });
-		selectTile(player, this);
+		game.selectTile({ str: 'playerOne', moves: player.moves, mark: player.mark }, this.classList[1]);
+		socket.emit('player-action', { action: 'select_tile', tile: this.classList[1], moves: player.moves });
 	})
 );
 
@@ -21,13 +21,13 @@ document.querySelector('.room-id').innerHTML = player.room;
 
 // restart button
 const restartBtn = document.querySelector('.restart');
-restartBtn.addEventListener('click', () => enableGame(player));
+restartBtn.addEventListener('click', () => game.enableGame(player));
 
 // emojis
 document.querySelectorAll('.emoji').forEach((e) =>
 	e.addEventListener('click', function () {
 		socket.emit('player-action', { action: 'emoji', emoji: this.innerHTML });
-		react('playerOne', this.innerHTML);
+		game.react('playerOne', this.innerHTML);
 	})
 );
 
@@ -45,14 +45,13 @@ socket.on('player-mark', ({ mark }) => (player.mark = mark));
 
 socket.on('player-action', (data) => {
 	if (data.action.toString() === 'select_tile') {
-		const tileHTML = document.querySelector(`.tile:nth-child(${data.tile})`);
-		const mark = player.mark === 'cross' ? marks.circle('playerTwo') : marks.cross('playerTwo');
-		tileHTML.innerHTML = mark;
+		const opponentMark = player.mark === 'cross' ? 'circle' : 'cross';
+		game.selectTile({ str: 'playerTwo', mark: opponentMark, moves: player.moves }, data.tile);
 	}
 
 	if (data.action.toString() === 'emoji') {
 		console.log(data);
-		react('playerTwo', data.emoji);
+		game.react('playerTwo', data.emoji);
 	}
 });
 

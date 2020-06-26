@@ -12,6 +12,10 @@ const win = [
 	[3, 5, 7],
 ];
 
+export const opponentMoves = [];
+
+const allowed = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 export const marks = {
 	cross: function (player) {
 		return `<svg width="133" height="133" viewBox="0 0 133 133" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -25,28 +29,32 @@ export const marks = {
 	},
 };
 
-export function selectTile(player, tile, allowedArr = { allowedPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9] }) {
-	const pos = parseInt(tile.classList[1]);
+export function selectTile(player, i) {
+	const tile = document.querySelector(`.tile:nth-child(${i})`);
+	const n = parseInt(tile.classList[1]);
+
 	// if position is allowed and not played before
-	if (allowedArr.allowedPositions.includes(pos) && !player.moves.includes(pos)) {
+	if (allowed.includes(n) && !player.moves.includes(n)) {
 		// find elem index and removes it
-		const i = allowedArr.allowedPositions.findIndex((e) => e === pos);
-		allowedArr.allowedPositions.splice(i, 1);
-		player.moves.push(pos);
+		const i = allowed.findIndex((e) => e === n);
+		allowed.splice(i, 1);
+		player.moves.push(n);
 		player.moves.sort();
-		tile.innerHTML = marks[player.mark]('playerOne');
+		tile.innerHTML = marks[player.mark](player.str);
 	}
 
-	const { arr } = checkWin(undefined, player);
+	const { str, arr } = checkWin(undefined, player);
 
 	if (arr.length > 0) {
-		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add('playerOne-win'));
-		return disableGame(selectTile);
+		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add(`${str}-win`));
+		return disableGame();
 	}
 }
 
 export function enableGame(player) {
 	player.moves.length = 0;
+	allowed.length = 0;
+	allowed.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
 	// clears all game tiles and adds event listener
 	document.querySelectorAll('.tile').forEach((t) => {
@@ -140,5 +148,5 @@ export function checkWin(arr = win, player) {
 		}
 	}
 	const parsedArr = [...new Set(tmp)]; // removes duplicates
-	return { _id: player.id, arr: parsedArr };
+	return { str: player.str, arr: parsedArr };
 }
