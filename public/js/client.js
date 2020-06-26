@@ -1,9 +1,9 @@
 import { Room } from './room.js';
 import { click, react, enableGame, disableGame, setupScoreboard, playerJoined, playerLeft } from './game.js';
-import { Player } from './player.js';
+import { Player } from './Player.js';
 
 const room = new Room('MOZETSU');
-const player = new Player('Moz');
+const player = new Player(window.prompt('Username'));
 
 setupScoreboard(room);
 

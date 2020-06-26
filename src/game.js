@@ -18,7 +18,7 @@ function removePlayer(room, playerId) {
 	const opponent = playerId !== room['playerOne']._id ? 'playerOne' : 'playerTwo';
 
 	room[player] = null;
-	room[opponent].opponent = null;
+	if (room[opponent] !== null) room[opponent].opponent = null;
 
 	const i = room.players.findIndex((e) => e === playerId);
 	room.players.splice(i, 1);

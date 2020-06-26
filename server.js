@@ -4,7 +4,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const hbs = require('express-handlebars');
-const Room = require('./src/room.js');
+const Room = require('./src/Room.js');
 const { addPlayer, removePlayer } = require('./src/game.js');
 
 app.use(express.json());
@@ -75,6 +75,8 @@ io.on('connection', (socket) => {
 		}
 
 		addPlayer(rooms[i], player);
+
+		console.log(rooms[i]);
 
 		// socket.join(room, () => {});
 	});
