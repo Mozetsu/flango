@@ -52,7 +52,6 @@ io.on('connection', (socket) => {
 		// room exists and is not full
 		if (i !== -1 && rooms[i].players.length < 2) {
 			const freePlayer = addPlayer(rooms[i], player);
-			console.log({ mark: rooms[i][freePlayer].mark });
 			io.to(player._id).emit('player-mark', { mark: rooms[i][freePlayer].mark });
 		}
 

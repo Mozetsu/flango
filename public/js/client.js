@@ -26,7 +26,8 @@ restartBtn.addEventListener('click', () => enableGame(player));
 // emojis
 document.querySelectorAll('.emoji').forEach((e) =>
 	e.addEventListener('click', function () {
-		react(this);
+		socket.emit('player-action', { action: 'emoji', emoji: this.innerHTML });
+		react('playerOne', this.innerHTML);
 	})
 );
 
@@ -43,10 +44,15 @@ socket.on('player-id', ({ _id }) => {
 socket.on('player-mark', ({ mark }) => (player.mark = mark));
 
 socket.on('player-action', (data) => {
-	if (data.action === 'select_tile') {
+	if (data.action.toString() === 'select_tile') {
 		const tileHTML = document.querySelector(`.tile:nth-child(${data.tile})`);
 		const mark = player.mark === 'cross' ? marks.circle('playerTwo') : marks.cross('playerTwo');
 		tileHTML.innerHTML = mark;
+	}
+
+	if (data.action.toString() === 'emoji') {
+		console.log(data);
+		react('playerTwo', data.emoji);
 	}
 });
 
