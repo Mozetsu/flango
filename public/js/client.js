@@ -44,3 +44,5 @@ socket.on('player-id', ({ _id }) => {
 	player._id = _id;
 	socket.emit('join-room', { player });
 });
+
+socket.on('unable-to-join', ({ server }) => console.log(server));

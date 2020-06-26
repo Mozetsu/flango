@@ -5,7 +5,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const hbs = require('express-handlebars');
 const Room = require('./src/room.js');
-const { addPlayer } = require('./src/game.js');
+const { addPlayer, removePlayer } = require('./src/game.js');
 
 app.use(express.json());
 
@@ -59,7 +59,8 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('join-room', ({ player }) => {
-		// search room
+		socket.room = player.room;
+		// search room index
 		const i = rooms.findIndex((room) => room._id === player.room);
 
 		// if room not found, create it
@@ -68,15 +69,20 @@ io.on('connection', (socket) => {
 			rooms.push(room);
 		}
 
-		// if room exists, add player
-		if (i !== -1) addPlayer(rooms[i], player);
+		// if room exists and is full
+		if (i !== -1 && rooms[i].players.length === 2) {
+			return io.to(player._id).emit('unable-to-join', { server: 'Room completely full' });
+		}
 
-		console.log(rooms[i]);
+		addPlayer(rooms[i], player);
 
 		// socket.join(room, () => {});
 	});
 
 	socket.on('disconnect', () => {
+		// search room index
+		const i = rooms.findIndex((room) => room._id === socket.room);
+		removePlayer(rooms[i], socket.id);
 		console.log(`${socket.id} left`);
 	});
 });

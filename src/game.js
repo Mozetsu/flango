@@ -1,8 +1,4 @@
 function addPlayer(room, player) {
-	if (room.players.length === 2) {
-		return { server: 'Room is full' };
-	}
-
 	const freePlayer = room.playerOne === null ? 'playerOne' : 'playerTwo';
 	const takenPlayer = room.playerOne !== null ? 'playerOne' : 'playerTwo';
 
@@ -17,4 +13,17 @@ function addPlayer(room, player) {
 	room['playerTwo'].mark = 'circle';
 }
 
-module.exports = { addPlayer };
+function removePlayer(room, playerId) {
+	const player = playerId === room['playerOne']._id ? 'playerOne' : 'playerTwo';
+	const opponent = playerId !== room['playerOne']._id ? 'playerOne' : 'playerTwo';
+
+	room[player] = null;
+	room[opponent].opponent = null;
+
+	const i = room.players.findIndex((e) => e === playerId);
+	room.players.splice(i, 1);
+
+	room.score = { playerOne: 0, playerTwo: 0, tie: 0 };
+}
+
+module.exports = { addPlayer, removePlayer };
