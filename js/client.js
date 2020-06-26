@@ -1,14 +1,21 @@
 import { Room } from './room.js';
-import { click, react, enableGame, disableGame, setupScoreboard } from './methods.js';
+import { click, react, enableGame, disableGame, setupScoreboard, playerJoined, playerLeft } from './game.js';
 
 const room = new Room('MOZETSU');
 
-document.querySelector('.room-id').innerHTML = room._id;
-
 setupScoreboard(room);
 
+
+// tiles
 const tiles = document.querySelectorAll('.tile');
 tiles.forEach((t) => t.addEventListener('click', selectTile));
+
+// room id
+document.querySelector('.room-id').innerHTML = room._id;
+
+// restart button
+const restartBtn = document.querySelector('.restart');
+restartBtn.addEventListener('click', () => enableGame(room, selectTile));
 
 function selectTile() {
 	click(room, this); // add position to player moves
@@ -25,6 +32,3 @@ document.querySelectorAll('.emoji').forEach((e) =>
 		react(this);
 	})
 );
-
-const restartBtn = document.querySelector('.restart');
-restartBtn.addEventListener('click', () => enableGame(room, selectTile));

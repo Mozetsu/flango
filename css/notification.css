@@ -2,8 +2,7 @@
 	position: absolute;
 	top: 0;
 	transform: translateY(230%);
-	font-size: 12px;
-	font-weight: bold;
+	font-size: 14px;
 	width: var(--board-width);
 	border-radius: var(--border-radius);
 	height: 35px;
@@ -15,10 +14,6 @@
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.2s ease-in-out;
-}
-
-.notification span {
-	font-size: 14px;
 }
 
 .notification-playerOne {
