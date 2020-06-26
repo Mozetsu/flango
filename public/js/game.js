@@ -12,7 +12,20 @@ const win = [
 	[3, 5, 7],
 ];
 
-export function selectTile(player, tile, allowedArr = { allowedPositions: [2, 4, 5, 6, 7, 8, 9] }) {
+export const marks = {
+	cross: function (player) {
+		return `<svg width="133" height="133" viewBox="0 0 133 133" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<path d="M25 25L108 108M108 25L25 108" stroke="var(--${player}-primary)" stroke-width="25" stroke-linecap="square" stroke-linejoin="round"/>
+	</svg>`;
+	},
+	circle: function (player) {
+		return `<svg width="137" height="137" viewBox="0 0 137 137" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<circle cx="68.5" cy="68.5" r="51" stroke="var(--${player}-primary)" stroke-width="25"/>
+	</svg>`;
+	},
+};
+
+export function selectTile(player, tile, allowedArr = { allowedPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9] }) {
 	const pos = parseInt(tile.classList[1]);
 	// if position is allowed and not played before
 	if (allowedArr.allowedPositions.includes(pos) && !player.moves.includes(pos)) {
@@ -21,7 +34,7 @@ export function selectTile(player, tile, allowedArr = { allowedPositions: [2, 4,
 		allowedArr.allowedPositions.splice(i, 1);
 		player.moves.push(pos);
 		player.moves.sort();
-		tile.innerHTML = player.mark;
+		tile.innerHTML = marks[player.mark]('playerOne');
 	}
 
 	const { arr } = checkWin(undefined, player);

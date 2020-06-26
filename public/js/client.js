@@ -1,5 +1,7 @@
-import { selectTile, react, enableGame, setupScoreboard, playerJoined, playerLeft } from './game.js';
+import { marks, selectTile, react, enableGame, setupScoreboard, playerJoined, playerLeft } from './game.js';
 import { Player } from './Player.js';
+
+const socket = io();
 
 const player = new Player(window.prompt('Username').toString().toUpperCase());
 
@@ -9,6 +11,7 @@ setupScoreboard(player);
 const tiles = document.querySelectorAll('.tile');
 tiles.forEach((t) =>
 	t.addEventListener('click', function () {
+		socket.emit('player-action', { action: 'select_tile', tile: this.classList[1] });
 		selectTile(player, this);
 	})
 );
@@ -28,7 +31,6 @@ document.querySelectorAll('.emoji').forEach((e) =>
 );
 
 // socket ######################################################################
-const socket = io();
 
 socket.emit('player-connected');
 
@@ -39,5 +41,13 @@ socket.on('player-id', ({ _id }) => {
 });
 
 socket.on('player-mark', ({ mark }) => (player.mark = mark));
+
+socket.on('player-action', (data) => {
+	if (data.action === 'select_tile') {
+		const tileHTML = document.querySelector(`.tile:nth-child(${data.tile})`);
+		const mark = player.mark === 'cross' ? marks.circle('playerTwo') : marks.cross('playerTwo');
+		tileHTML.innerHTML = mark;
+	}
+});
 
 socket.on('unable-to-join', ({ server }) => console.log(server));
