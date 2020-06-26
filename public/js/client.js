@@ -5,7 +5,6 @@ const room = new Room('MOZETSU');
 
 setupScoreboard(room);
 
-
 // tiles
 const tiles = document.querySelectorAll('.tile');
 tiles.forEach((t) => t.addEventListener('click', selectTile));
