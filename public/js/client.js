@@ -37,12 +37,10 @@ document.querySelectorAll('.emoji').forEach((e) =>
 // socket ######################################################################
 const socket = io();
 
-socket.on('connect', () => {
-	socket.emit('player-connected');
-});
+socket.emit('player-connected');
 
 socket.on('player-id', ({ _id }) => {
 	console.log(_id);
 	player._id = _id;
-	socket.emit('join-room', { room: player.room, playerId: _id, username: player.username });
+	socket.emit('join-room', { player });
 });

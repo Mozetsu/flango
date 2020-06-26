@@ -1,7 +1,5 @@
-const Player = require('./player.js');
-
 class Room {
-	constructor(_id, playerId, username) {
+	constructor(player) {
 		this.win = [
 			// rows
 			[1, 2, 3],
@@ -16,15 +14,15 @@ class Room {
 			[3, 5, 7],
 		];
 
-		this._id = _id;
+		this._id = player.room;
 
 		this.allowedPositions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-		this.playerOne = new Player(playerId, username, this);
+		this.playerOne = player;
 
 		this.playerTwo = null;
 
-		this.players = [this.playerOne._id];
+		this.players = [player._id];
 
 		this.playing = null;
 
