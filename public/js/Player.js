@@ -4,7 +4,7 @@ export class Player {
 	constructor(username) {
 		this._id = null;
 		// this.room = ministring(6, 'numbers, uppercase');
-		this.room = 'B0T5J7';
+		this.room = 'M5DT71';
 		this.username = username;
 		this.mark = null;
 		this.opponent = null;

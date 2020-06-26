@@ -5,7 +5,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const hbs = require('express-handlebars');
 const Room = require('./src/Room.js');
-const { addPlayer, removePlayer } = require('./src/game.js');
+const { cross, circle, addPlayer, removePlayer } = require('./src/game.js');
 
 app.use(express.json());
 
@@ -67,6 +67,7 @@ io.on('connection', (socket) => {
 		if (i === -1) {
 			const room = new Room(player);
 			rooms.push(room);
+			io.to(player._id).emit('player-mark', { mark: cross });
 		}
 
 		// room exists and is full
@@ -75,9 +76,10 @@ io.on('connection', (socket) => {
 		}
 
 		// room exists and is not full
-		if (i !== -1 && rooms[i].players.length < 2) addPlayer(rooms[i], player);
-
-		console.log(rooms[i]);
+		if (i !== -1 && rooms[i].players.length < 2) {
+			const freePlayer = addPlayer(rooms[i], player);
+			io.to(player._id).emit('player-mark', { mark: rooms[i][freePlayer].mark });
+		}
 
 		// socket.join(room, () => {});
 	});
