@@ -22,32 +22,32 @@ app.get('/:room', (req, res) => {
 
 // rooms ##########################################################
 const rooms = [
-	{
-		win: [
-			[1, 2, 3],
-			[4, 5, 6],
-			[7, 8, 9],
-			[1, 4, 7],
-			[2, 5, 8],
-			[3, 6, 9],
-			[1, 5, 9],
-			[3, 5, 7],
-		],
-		_id: 'B0T5J7',
-		allowedPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-		playerOne: {
-			_id: 'RPM5fXeaygldbZJsAAAB',
-			room: 'B0T5J7',
-			username: 'Ghown',
-			mark: null,
-			opponent: null,
-			moves: [],
-		},
-		playerTwo: null,
-		players: ['RPM5fXeaygldbZJsAAAB'],
-		playing: null,
-		score: { playerOne: 0, playerTwo: 0, tie: 0 },
-	},
+	// {
+	// 	win: [
+	// 		[1, 2, 3],
+	// 		[4, 5, 6],
+	// 		[7, 8, 9],
+	// 		[1, 4, 7],
+	// 		[2, 5, 8],
+	// 		[3, 6, 9],
+	// 		[1, 5, 9],
+	// 		[3, 5, 7],
+	// 	],
+	// 	_id: 'B0T5J7',
+	// 	allowedPositions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+	// 	playerOne: {
+	// 		_id: 'RPM5fXeaygldbZJsAAAB',
+	// 		room: 'B0T5J7',
+	// 		username: 'Ghown',
+	// 		mark: null,
+	// 		opponent: null,
+	// 		moves: [],
+	// 	},
+	// 	playerTwo: null,
+	// 	players: ['RPM5fXeaygldbZJsAAAB'],
+	// 	playing: null,
+	// 	score: { playerOne: 0, playerTwo: 0, tie: 0 },
+	// },
 ];
 
 // socket ##########################################################
@@ -63,18 +63,19 @@ io.on('connection', (socket) => {
 		// search room index
 		const i = rooms.findIndex((room) => room._id === player.room);
 
-		// if room not found, create it
+		// room not found, create it
 		if (i === -1) {
 			const room = new Room(player);
 			rooms.push(room);
 		}
 
-		// if room exists and is full
+		// room exists and is full
 		if (i !== -1 && rooms[i].players.length === 2) {
 			return io.to(player._id).emit('unable-to-join', { server: 'Room completely full' });
 		}
 
-		addPlayer(rooms[i], player);
+		// room exists and is not full
+		if (i !== -1 && rooms[i].players.length < 2) addPlayer(rooms[i], player);
 
 		console.log(rooms[i]);
 
@@ -86,6 +87,7 @@ io.on('connection', (socket) => {
 		const i = rooms.findIndex((room) => room._id === socket.room);
 		removePlayer(rooms[i], socket.id);
 		console.log(`${socket.id} left`);
+		console.log(rooms[i]);
 	});
 });
 

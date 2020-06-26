@@ -7,10 +7,18 @@ function addPlayer(room, player) {
 	room.players.push(player._id);
 
 	// define players opponent and mark
-	room[freePlayer].opponent = room[takenPlayer]._id;
-	room[takenPlayer].opponent = room[freePlayer]._id;
-	room['playerOne'].mark = 'cross';
-	room['playerTwo'].mark = 'circle';
+	if (room[takenPlayer] !== null) {
+		room[takenPlayer].opponent = room[freePlayer]._id;
+		room[freePlayer].opponent = room[takenPlayer]._id;
+	}
+
+	if (room['playerOne'] !== null) {
+		room['playerOne'].mark = 'cross';
+	}
+
+	if (room['playerTwo'] !== null) {
+		room['playerTwo'].mark = 'circle';
+	}
 }
 
 function removePlayer(room, playerId) {

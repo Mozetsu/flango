@@ -31,15 +31,15 @@ export function disableGame(fn) {
 	restartBtn.style.pointerEvents = 'all';
 }
 
-export function click(room, tile) {
+export function click(player, tile, arr) {
 	const pos = parseInt(tile.classList[1]);
 	// if position is allowed and not played before
-	if (room.allowedPositions.includes(pos) && !room.playerOne.moves.includes(pos)) {
+	if (arr.allowedPositions.includes(pos) && !player.moves.includes(pos)) {
 		// find elem index and removes it
-		const i = room.allowedPositions.findIndex((e) => e === pos);
-		room.allowedPositions.splice(i, 1);
-		room.playerOne.moves.push(pos);
-		room.playerOne.moves.sort();
+		const i = arr.allowedPositions.findIndex((e) => e === pos);
+		arr.allowedPositions.splice(i, 1);
+		player.moves.push(pos);
+		player.moves.sort();
 		tile.innerHTML = room.playerOne.mark;
 	}
 }
@@ -57,9 +57,9 @@ export function react(emoji) {
 	}
 }
 
-export function setupScoreboard(room) {
+export function setupScoreboard(player) {
 	const p1 = document.querySelector('.playerOne').querySelector('.username').children[0];
-	p1.innerHTML = room.playerOne.username;
+	p1.innerHTML = player.username;
 
 	// const p2 = document.querySelector('.playerTwo').querySelector('.username').children[0];
 	// p2.innerHTML = room.playerOne.opponent;
@@ -114,7 +114,7 @@ function arrayContainsArray(arr1, arr2) {
 }
 
 // arr -> win combinations array
-function checkWin(arr, player) {
+export function checkWin(arr, player) {
 	const tmp = [];
 	for (let combination of arr) {
 		if (this.arrayContainsArray(combination, player.moves)) {
