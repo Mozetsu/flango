@@ -21,7 +21,10 @@ document.querySelector('.room-id').innerHTML = player.room;
 
 // restart button
 const restartBtn = document.querySelector('.restart');
-restartBtn.addEventListener('click', () => game.enableGame(player));
+restartBtn.addEventListener('click', () => {
+	game.opponentMoves.length = 0;
+	game.enableGame(player);
+});
 
 // emojis
 document.querySelectorAll('.emoji').forEach((e) =>
@@ -45,8 +48,9 @@ socket.on('player-mark', ({ mark }) => (player.mark = mark));
 
 socket.on('player-action', (data) => {
 	if (data.action.toString() === 'select_tile') {
+		game.opponentMoves.push(data.tile);
 		const opponentMark = player.mark === 'cross' ? 'circle' : 'cross';
-		game.selectTile({ str: 'playerTwo', mark: opponentMark, moves: player.moves }, data.tile);
+		game.selectTile({ str: 'playerTwo', mark: opponentMark, moves: game.opponentMoves }, data.tile);
 	}
 
 	if (data.action.toString() === 'emoji') {
