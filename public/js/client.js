@@ -22,6 +22,7 @@ document.querySelector('.room-id').innerHTML = player.room;
 // restart button
 const restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', () => {
+	socket.emit('player-action', { action: 'restart_game' });
 	game.opponentMoves.length = 0;
 	game.enableGame(player);
 });
@@ -54,8 +55,12 @@ socket.on('player-action', (data) => {
 	}
 
 	if (data.action.toString() === 'emoji') {
-		console.log(data);
 		game.react('playerTwo', data.emoji);
+	}
+
+	if (data.action.toString() === 'restart_game') {
+		game.opponentMoves.length = 0;
+		game.enableGame(player);
 	}
 });
 
