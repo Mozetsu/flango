@@ -12,18 +12,34 @@ const win = [
 	[3, 5, 7],
 ];
 
-export function enableGame(room, fn) {
-	// reset allowed positions and player moves array
-	room.playerOne.moves.length = 0;
-	room.allowedPositions.length = 0;
-	room.allowedPositions.push(1, 2, 3, 4, 5, 6, 7, 8, 9);
+export function selectTile(player, tile, allowedArr = { allowedPositions: [2, 4, 5, 6, 7, 8, 9] }) {
+	const pos = parseInt(tile.classList[1]);
+	// if position is allowed and not played before
+	if (allowedArr.allowedPositions.includes(pos) && !player.moves.includes(pos)) {
+		// find elem index and removes it
+		const i = allowedArr.allowedPositions.findIndex((e) => e === pos);
+		allowedArr.allowedPositions.splice(i, 1);
+		player.moves.push(pos);
+		player.moves.sort();
+		tile.innerHTML = player.mark;
+	}
+
+	const { arr } = checkWin(undefined, player);
+
+	if (arr.length > 0) {
+		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add('playerOne-win'));
+		return disableGame(selectTile);
+	}
+}
+
+export function enableGame(player) {
+	player.moves.length = 0;
 
 	// clears all game tiles and adds event listener
 	document.querySelectorAll('.tile').forEach((t) => {
 		t.innerHTML = '';
 		t.classList.remove(t.classList[2]);
 		t.style.pointerEvents = 'all';
-		t.addEventListener('click', fn);
 	});
 
 	// hide restart button
@@ -32,30 +48,17 @@ export function enableGame(room, fn) {
 	restartBtn.style.pointerEvents = 'none';
 }
 
-export function disableGame(fn) {
+export function disableGame() {
 	// removes event listener from game tiles
 	document.querySelectorAll('.tile').forEach((t) => {
 		t.style.pointerEvents = 'none';
-		t.removeEventListener('click', fn);
+		t.classList.pointerEvents = 'none';
 	});
 
 	// display restart button
 	const restartBtn = document.querySelector('.restart');
 	restartBtn.style.opacity = 1;
 	restartBtn.style.pointerEvents = 'all';
-}
-
-export function click(player, tile, arr) {
-	const pos = parseInt(tile.classList[1]);
-	// if position is allowed and not played before
-	if (arr.allowedPositions.includes(pos) && !player.moves.includes(pos)) {
-		// find elem index and removes it
-		const i = arr.allowedPositions.findIndex((e) => e === pos);
-		arr.allowedPositions.splice(i, 1);
-		player.moves.push(pos);
-		player.moves.sort();
-		tile.innerHTML = player.mark;
-	}
 }
 
 export function react(emoji) {

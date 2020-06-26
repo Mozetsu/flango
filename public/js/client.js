@@ -1,4 +1,4 @@
-import { click, react, enableGame, disableGame, setupScoreboard, playerJoined, playerLeft, checkWin } from './game.js';
+import { selectTile, react, enableGame, setupScoreboard, playerJoined, playerLeft } from './game.js';
 import { Player } from './Player.js';
 
 const player = new Player(window.prompt('Username').toString().toUpperCase());
@@ -7,23 +7,18 @@ setupScoreboard(player);
 
 // tiles
 const tiles = document.querySelectorAll('.tile');
-tiles.forEach((t) => t.addEventListener('click', selectTile));
+tiles.forEach((t) =>
+	t.addEventListener('click', function () {
+		selectTile(player, this);
+	})
+);
 
 // room id
 document.querySelector('.room-id').innerHTML = player.room;
 
 // restart button
 const restartBtn = document.querySelector('.restart');
-restartBtn.addEventListener('click', () => enableGame(room, selectTile));
-
-function selectTile() {
-	click(player, this, { allowedPositions: [2, 4, 5, 6, 7, 8, 9] }); // add position to player moves
-	const { arr } = checkWin(undefined, player);
-	if (arr.length > 0) {
-		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add('playerOne-win'));
-		return disableGame(selectTile);
-	}
-}
+restartBtn.addEventListener('click', () => enableGame(player));
 
 // emojis
 document.querySelectorAll('.emoji').forEach((e) =>
