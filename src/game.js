@@ -42,7 +42,6 @@ function removePlayer(room, playerId) {
 	room.players.splice(i, 1);
 
 	room.score = { playerOne: 0, playerTwo: 0, tie: 0 };
-	console.log(room);
 }
 
 module.exports = { addPlayer, removePlayer };
