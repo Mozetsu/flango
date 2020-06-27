@@ -43,17 +43,20 @@ restartBtn.addEventListener('click', () => {
 socket.emit('player-connected');
 
 socket.on('player-id', ({ _id }) => {
-	console.log(_id);
 	player._id = _id;
 	socket.emit('join-room', { player });
 });
 
 socket.on('player-data', ({ mark, opponent }) => {
-	if (!opponent) return (player.mark = mark);
+	if (!opponent) {
+		game.disableGame(0);
+		return (player.mark = mark);
+	}
 
 	player.mark = mark;
 	player.opponent = opponent;
 	mark === 'cross' ? game.opponentMark.push('circle') : game.opponentMark.push('cross');
+	game.enableGame(player);
 	game.playerJoined(opponent);
 	game.setupRoom(player, opponent);
 });
@@ -85,7 +88,7 @@ socket.on('player-left', () => {
 	document.querySelector('.playerTwo').querySelector('.username').children[0].innerHTML = 'PLAYER TWO';
 	// remove player score
 	document.querySelector('.playerTwo').querySelector('.score').innerHTML = '0';
-	game.disableGame(1);
+	game.disableGame(0);
 	return game.playerLeft(player.opponent);
 });
 

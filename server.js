@@ -19,7 +19,7 @@ app.use(express.static('public'));
 
 const PORT = process.env.PORT;
 
-app.get('/:room', (req, res) => {
+app.get('/', (req, res) => {
 	res.render('index');
 });
 
@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
 		const i = rooms.findIndex((room) => room._id === socket.room);
 
 		// notify room on player leave
-		io.to(rooms[i]._id).emit('player-left');
+		socket.to(rooms[i]._id).emit('player-left');
 
 		const player = removePlayer(rooms[i], socket.id);
 		console.log(`${chalk.inverse(` ${rooms[i]._id} `)} ${chalk.yellow.bold(`${player} LEFT`)}`);

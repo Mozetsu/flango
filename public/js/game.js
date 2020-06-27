@@ -5,6 +5,7 @@ export const opponentMark = [];
 
 export function enableGame(player) {
 	if (!player) {
+		document.querySelector('.restart').pointerEvents = 'all';
 		return document.querySelectorAll('.tile').forEach((t) => (t.style.pointerEvents = 'all'));
 	}
 
@@ -27,6 +28,7 @@ export function enableGame(player) {
 
 export function disableGame(state) {
 	if (!state) {
+		document.querySelector('.restart').style.pointerEvents = 'none';
 		return document.querySelectorAll('.tile').forEach((t) => (t.style.pointerEvents = 'none'));
 	}
 
@@ -54,7 +56,6 @@ export function selectTile(player, i) {
 		// find elem index and removes it
 		const i = allowed.findIndex((e) => e === n);
 		allowed.splice(i, 1);
-		console.log(allowed);
 		player.moves.push(n);
 		player.moves.sort();
 		tile.innerHTML = marks[player.mark](player.str);
