@@ -16,6 +16,10 @@
 	transition: opacity 0.2s ease-in-out;
 }
 
+.notification .notification-body {
+	margin-left: 5px;
+}
+
 .notification-playerOne {
 	background-color: var(--playerOne-primary);
 }

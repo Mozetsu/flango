@@ -104,25 +104,33 @@ export function setupRoom(playerOne, playerTwo) {
 export function playerJoined(player) {
 	const notification = document.querySelector('.notification');
 
-	notification.children[0].children[0].innerHTML = player;
-	notification.children[0].innerHTML += 'has joined the game';
+	notification.children[0].innerHTML = player;
+	notification.children[1].innerHTML = 'has joined the game';
 	notification.classList.toggle('notification-playerOne');
 	notification.style.opacity = 1;
 
 	setTimeout(() => {
 		notification.style.opacity = 0;
 	}, 1500);
+
+	setTimeout(() => {
+		notification.classList.toggle('notification-playerOne');
+	}, 1700);
 }
 
 export function playerLeft(player) {
 	const notification = document.querySelector('.notification');
 
-	notification.children[0].children[0].innerHTML = player;
-	notification.children[0].innerHTML += 'has left the game';
+	notification.children[0].innerHTML = player;
+	notification.children[1].innerHTML = 'has left the game';
 	notification.classList.toggle('notification-playerTwo');
 	notification.style.opacity = 1;
 
 	setTimeout(() => {
 		notification.style.opacity = 0;
 	}, 1500);
+
+	setTimeout(() => {
+		notification.classList.toggle('notification-playerTwo');
+	}, 1700);
 }

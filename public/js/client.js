@@ -54,7 +54,7 @@ socket.on('player-data', ({ mark, opponent }) => {
 	player.mark = mark;
 	player.opponent = opponent;
 	mark === 'cross' ? game.opponentMark.push('circle') : game.opponentMark.push('cross');
-	game.playerJoined(game.opponentMark);
+	game.playerJoined(opponent);
 	game.setupRoom(player, opponent);
 });
 
