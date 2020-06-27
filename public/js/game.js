@@ -1,4 +1,4 @@
-import { win, marks, allowed } from './data.js';
+import { win, marks, allowed, checkWin } from './data.js';
 
 export const opponentMoves = [];
 export const opponentMark = [];
@@ -125,33 +125,4 @@ export function playerLeft(player) {
 	setTimeout(() => {
 		notification.style.opacity = 0;
 	}, 1500);
-}
-
-// ##################################################################
-
-function arrayContainsArray(arr1, arr2) {
-	const tmp = [];
-	arr1.forEach((a) => {
-		if (arr2.find((b) => b === a)) tmp.push(a);
-	});
-	return tmp.length === arr1.length;
-}
-
-// arr -> win combinations array
-function checkWin(arr, player) {
-	// not enough plays to win
-	if (player.moves.length < 3) return { str: '', arr: [] };
-
-	// array to store possible winning combinations
-	const tmp = [];
-
-	for (let combination of arr) {
-		if (arrayContainsArray(combination, player.moves)) {
-			tmp.push(...combination);
-		}
-	}
-
-	const parsedArr = [...new Set(tmp)]; // removes duplicates
-
-	return { str: player.str, arr: parsedArr };
 }

@@ -54,17 +54,8 @@ socket.on('player-data', ({ mark, opponent }) => {
 	player.mark = mark;
 	player.opponent = opponent;
 	mark === 'cross' ? game.opponentMark.push('circle') : game.opponentMark.push('cross');
+	game.playerJoined(game.opponentMark);
 	game.setupRoom(player, opponent);
-});
-
-socket.on('player-left', () => {
-	// remove player one score
-	document.querySelector('.playerOne').querySelector('.score').innerHTML = '0';
-	// remove player two username
-	document.querySelector('.playerTwo').querySelector('.username').children[0].innerHTML = 'PLAYER TWO';
-	// remove player score
-	document.querySelector('.playerTwo').querySelector('.score').innerHTML = '0';
-	return game.disableGame(1);
 });
 
 socket.on('player-action', (data) => {
@@ -85,6 +76,17 @@ socket.on('player-action', (data) => {
 		game.opponentMoves.length = 0;
 		game.enableGame(player);
 	}
+});
+
+socket.on('player-left', () => {
+	// remove player one score
+	document.querySelector('.playerOne').querySelector('.score').innerHTML = '0';
+	// remove player two username
+	document.querySelector('.playerTwo').querySelector('.username').children[0].innerHTML = 'PLAYER TWO';
+	// remove player score
+	document.querySelector('.playerTwo').querySelector('.score').innerHTML = '0';
+	game.disableGame(1);
+	return game.playerLeft(player.opponent);
 });
 
 socket.on('unable-to-join', ({ server }) => console.log(server));
