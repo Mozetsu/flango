@@ -47,18 +47,16 @@ socket.on('player-id', ({ _id }) => {
 
 socket.on('player-mark', ({ mark }) => {
 	player.mark = mark;
-	game.opponentMark = mark === 'cross' ? 'circle' : 'cross';
+	mark === 'cross' ? game.opponentMark.push('circle') : game.opponentMark.push('cross');
 });
 
 socket.on('player-action', (data) => {
 	if (data.action.toString() === 'select_tile') {
 		game.opponentMoves.push(data.tile);
-
 		const { allowed, end } = game.selectTile(
-			{ str: 'playerTwo', mark: game.opponentMark, moves: game.opponentMoves },
+			{ str: 'playerTwo', mark: game.opponentMark[0], moves: game.opponentMoves },
 			data.tile
 		);
-
 		if (allowed && !end) game.enableGame(0);
 	}
 

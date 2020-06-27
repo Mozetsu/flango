@@ -1,37 +1,7 @@
 import { win, marks, allowed } from './data.js';
 
 export const opponentMoves = [];
-export const opponentMark = null;
-
-export function selectTile(player, i) {
-	const tile = document.querySelector(`.tile:nth-child(${i})`);
-	const n = parseInt(tile.classList[1]);
-
-	// position not allowed and played before
-	if (!allowed.includes(n) || player.moves.includes(n)) return { allowed: false };
-
-	// position allowed and not played before
-	if (allowed.includes(n) && !player.moves.includes(n)) {
-		disableGame(0);
-		// find elem index and removes it
-		const i = allowed.findIndex((e) => e === n);
-		allowed.splice(i, 1);
-		console.log(allowed);
-		player.moves.push(n);
-		player.moves.sort();
-		tile.innerHTML = marks[player.mark](player.str);
-	}
-
-	const { str, arr } = checkWin(win, player);
-
-	if (arr.length > 0) {
-		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add(`${str}-win`));
-		disableGame(1);
-		return { allowed: true, end: true };
-	}
-
-	return { allowed: true, end: false };
-}
+export const opponentMark = [];
 
 export function enableGame(player) {
 	if (!player) {
@@ -71,6 +41,36 @@ export function disableGame(state) {
 	});
 }
 
+export function selectTile(player, i) {
+	const tile = document.querySelector(`.tile:nth-child(${i})`);
+	const n = parseInt(tile.classList[1]);
+
+	// position not allowed and played before
+	if (!allowed.includes(n) || player.moves.includes(n)) return { allowed: false };
+
+	// position allowed and not played before
+	if (allowed.includes(n) && !player.moves.includes(n)) {
+		disableGame(0);
+		// find elem index and removes it
+		const i = allowed.findIndex((e) => e === n);
+		allowed.splice(i, 1);
+		console.log(allowed);
+		player.moves.push(n);
+		player.moves.sort();
+		tile.innerHTML = marks[player.mark](player.str);
+	}
+
+	const { str, arr } = checkWin(win, player);
+
+	if (arr.length > 0) {
+		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add(`${str}-win`));
+		disableGame(1);
+		return { allowed: true, end: true };
+	}
+
+	return { allowed: true, end: false };
+}
+
 export function displayEmoji(player, emoji) {
 	if (document.querySelector(`.${player}`).children[2].style.opacity !== '1') {
 		// show emoji
@@ -79,8 +79,8 @@ export function displayEmoji(player, emoji) {
 		// hide emoji
 		setTimeout(() => {
 			document.querySelector(`.${player}`).children[2].style.opacity = 0;
-			return { allowed: true };
 		}, 1500);
+		return { allowed: true };
 	}
 	return { allowed: false };
 }

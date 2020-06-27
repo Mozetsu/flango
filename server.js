@@ -1,4 +1,8 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config();
+	const chalk = require('chalk');
+}
+
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
@@ -6,6 +10,7 @@ const io = require('socket.io').listen(server);
 const hbs = require('express-handlebars');
 const Room = require('./src/Room.js');
 const { cross, circle, addPlayer, removePlayer } = require('./src/game.js');
+const chalk = require('chalk');
 
 app.use(express.json());
 
@@ -30,7 +35,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('join-room', ({ player }) => {
-		console.log(`${socket.id} joined [${player.room}]`);
+		console.log(`${chalk.inverse(` ${player.room} `)} ${chalk.blue.bold(`${player.username} JOINED`)}`);
 		socket.room = player.room;
 
 		// search room index
@@ -66,8 +71,8 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => {
 		// search room index
 		const i = rooms.findIndex((room) => room._id === socket.room);
-		removePlayer(rooms[i], socket.id);
-		console.log(`${socket.id} left [${rooms[i]._id}]`);
+		const player = removePlayer(rooms[i], socket.id);
+		console.log(`${chalk.inverse(` ${rooms[i]._id} `)} ${chalk.yellow.bold(`${player} LEFT`)}`);
 	});
 });
 

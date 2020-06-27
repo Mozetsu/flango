@@ -36,12 +36,15 @@ function removePlayer(room, playerId) {
 		room[opponent].opponent = null;
 	}
 
+	const usr = room[player].username;
 	room[player] = null;
 
 	const i = room.players.findIndex((e) => e === playerId);
 	room.players.splice(i, 1);
 
 	room.score = { playerOne: 0, playerTwo: 0, tie: 0 };
+
+	return usr;
 }
 
 module.exports = { addPlayer, removePlayer };
