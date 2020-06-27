@@ -85,17 +85,20 @@ export function displayEmoji(player, emoji) {
 	return { allowed: false };
 }
 
-export function setupRoom(player) {
+export function setupRoom(playerOne, playerTwo) {
+	if (playerTwo) {
+		// player two
+		const p2 = document.querySelector('.playerTwo').querySelector('.username').children[0];
+		p2.innerHTML = playerOne.opponent;
+		return;
+	}
+
 	// player one
 	const p1 = document.querySelector('.playerOne').querySelector('.username').children[0];
-	p1.innerHTML = player.username;
-
-	// // player two
-	// const p2 = document.querySelector('.playerTwo').querySelector('.username').children[0];
-	// p2.innerHTML = room.playerOne.opponent;
+	p1.innerHTML = playerOne.username;
 
 	// room id
-	document.querySelector('.room-id').innerHTML = player.room;
+	document.querySelector('.room-id').innerHTML = playerOne.room;
 }
 
 export function playerJoined(player) {

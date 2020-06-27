@@ -1,16 +1,14 @@
-if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').config();
-	const chalk = require('chalk');
-}
-
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const hbs = require('express-handlebars');
 const Room = require('./src/Room.js');
-const { cross, circle, addPlayer, removePlayer } = require('./src/game.js');
 const chalk = require('chalk');
+const { addPlayer, removePlayer } = require('./src/game.js');
+
+const rooms = [];
 
 app.use(express.json());
 
@@ -25,10 +23,9 @@ app.get('/:room', (req, res) => {
 	res.render('index');
 });
 
-// rooms ##########################################################
-const rooms = [];
+// socket ###############################################################################################
+// functions ############################################################################################
 
-// socket ##########################################################
 io.on('connection', (socket) => {
 	socket.on('player-connected', () => {
 		socket.emit('player-id', { _id: socket.id });
@@ -45,7 +42,7 @@ io.on('connection', (socket) => {
 		if (i === -1) {
 			const room = new Room(player);
 			rooms.push(room);
-			io.to(player._id).emit('player-mark', { mark: 'cross' });
+			io.to(player._id).emit('player-data', { mark: 'cross' });
 			return socket.join(room._id, () => {});
 		}
 
@@ -55,22 +52,28 @@ io.on('connection', (socket) => {
 		}
 
 		// room exists and is not full
-		if (i !== -1 && rooms[i].players.length < 2) {
-			const freePlayer = addPlayer(rooms[i], player);
-			io.to(player._id).emit('player-mark', { mark: rooms[i][freePlayer].mark });
+		if (i !== -1 && rooms[i].players.length === 1) {
+			const { free, taken } = addPlayer(rooms[i], player);
+
+			// send new player to existing player
+			io.to(rooms[i][taken]._id).emit('player-data', { opponent: rooms[i][free].username });
+
+			// send existing player to new player
+			io.to(player._id).emit('player-data', { mark: rooms[i][free].mark, opponent: rooms[i][taken].username });
 		}
 
 		socket.join(rooms[i]._id, () => {});
 	});
 
-	socket.on('player-action', (action) => {
-		console.log(action);
-		socket.to(socket.room).emit('player-action', action);
-	});
+	socket.on('player-action', (action) => socket.to(socket.room).emit('player-action', action));
 
 	socket.on('disconnect', () => {
 		// search room index
 		const i = rooms.findIndex((room) => room._id === socket.room);
+
+		// notify room on player leave
+		io.to(rooms[i]._id).emit('player-left');
+
 		const player = removePlayer(rooms[i], socket.id);
 		console.log(`${chalk.inverse(` ${rooms[i]._id} `)} ${chalk.yellow.bold(`${player} LEFT`)}`);
 	});

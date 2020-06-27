@@ -1,9 +1,12 @@
 import * as game from './game.js';
 import { Player } from './Player.js';
 
-const player = new Player(window.prompt('Username').toString().toUpperCase());
+const player = new Player(
+	window.prompt('Room').toString().toUpperCase(),
+	window.prompt('Username').toString().toUpperCase()
+);
 
-game.setupRoom(player);
+game.setupRoom(player, 0);
 
 const socket = io();
 
@@ -45,9 +48,27 @@ socket.on('player-id', ({ _id }) => {
 	socket.emit('join-room', { player });
 });
 
-socket.on('player-mark', ({ mark }) => {
+socket.on('player-data', ({ mark, opponent }) => {
+	if (opponent) {
+		console.log(opponent);
+
+		player.opponent = opponent;
+		game.setupRoom(player, opponent);
+		return;
+	}
+
 	player.mark = mark;
 	mark === 'cross' ? game.opponentMark.push('circle') : game.opponentMark.push('cross');
+});
+
+socket.on('player-left', () => {
+	// remove player one score
+	document.querySelector('.playerOne').querySelector('.score').innerHTML = '0';
+	// remove player two username
+	document.querySelector('.playerTwo').querySelector('.username').children[0].innerHTML = 'PLAYER TWO';
+	// remove player score
+	document.querySelector('.playerTwo').querySelector('.score').innerHTML = '0';
+	return game.disableGame(1);
 });
 
 socket.on('player-action', (data) => {

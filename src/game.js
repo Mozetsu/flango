@@ -20,12 +20,14 @@ function addPlayer(room, player) {
 		room['playerTwo'].mark = 'circle';
 	}
 
-	return freePlayer;
+	return { free: freePlayer, taken: takenPlayer };
 }
 
 function removePlayer(room, playerId) {
 	let player = null;
 	let opponent = null;
+
+	if (room.players.length === 0) return;
 
 	if (room.players.length === 1 && room['playerOne']) player = 'playerOne';
 	else player = 'playerTwo';
