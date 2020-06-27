@@ -1,8 +1,5 @@
 import { win, marks, allowed, checkWin } from './data.js';
 
-export const opponentMoves = [];
-export const opponentMark = [];
-
 export function enableGame(player) {
 	if (!player) {
 		document.querySelector('.restart').pointerEvents = 'all';
@@ -61,9 +58,10 @@ export function selectTile(player, i) {
 		tile.innerHTML = marks[player.mark](player.str);
 	}
 
-	const { str, arr } = checkWin(win, player);
+	const { arr, str } = checkWin(win, player);
 
 	if (arr.length > 0) {
+		// document.querySelector(`.${str}`).querySelector('.score').innerHTML = .
 		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add(`${str}-win`));
 		disableGame(1);
 		return { allowed: true, end: true };
@@ -90,7 +88,7 @@ export function setupRoom(playerOne, playerTwo) {
 	if (playerTwo) {
 		// player two
 		const p2 = document.querySelector('.playerTwo').querySelector('.username').children[0];
-		p2.innerHTML = playerOne.opponent;
+		p2.innerHTML = playerOne.opponent.username;
 		return;
 	}
 

@@ -1,14 +1,16 @@
-// import { ministring } from './ministring.js';
-
 export class Player {
 	constructor(room, username) {
 		this._id = null;
-		// this.room = ministring(6, 'numbers, uppercase');
-		// this.room = 'M5DT71';
 		this.room = room;
 		this.username = username;
 		this.mark = null;
-		this.opponent = null;
+		this.opponent = {
+			username: null,
+			mark: null,
+			moves: [],
+			score: 0,
+		};
+		this.score = 0;
 		this.moves = [];
 	}
 }

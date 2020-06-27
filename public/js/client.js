@@ -16,9 +16,17 @@ tiles.forEach((t) => t.addEventListener('click', tileClick));
 
 function tileClick() {
 	// check if play is allowed
-	const { allowed } = game.selectTile({ str: 'playerOne', moves: player.moves, mark: player.mark }, this.classList[1]);
+	const { allowed, end } = game.selectTile(
+		{ str: 'playerOne', moves: player.moves, mark: player.mark },
+		this.classList[1]
+	);
 	// if allowed, send socket io event
 	if (allowed) socket.emit('player-action', { action: 'select_tile', tile: this.classList[1], moves: player.moves });
+	// player one wins
+	if (end) {
+		player.score++;
+		document.querySelector(`.playerOne`).querySelector('.score').innerHTML = player.score;
+	}
 }
 
 // emojis
@@ -33,7 +41,7 @@ document.querySelectorAll('.emoji').forEach((e) =>
 const restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', () => {
 	socket.emit('player-action', { action: 'restart_game' });
-	game.opponentMoves.length = 0;
+	player.opponent.moves.length = 0;
 	game.enableGame(player);
 });
 
@@ -54,29 +62,39 @@ socket.on('player-data', ({ mark, opponent }) => {
 	}
 
 	player.mark = mark;
-	player.opponent = opponent;
-	mark === 'cross' ? game.opponentMark.push('circle') : game.opponentMark.push('cross');
+	player.opponent.username = opponent;
+	player.opponent.mark = mark === 'cross' ? 'circle' : 'cross';
 	game.enableGame(player);
 	game.playerJoined(opponent);
 	game.setupRoom(player, opponent);
 });
 
 socket.on('player-action', (data) => {
+	// tile click -----------------------------------
 	if (data.action.toString() === 'select_tile') {
-		game.opponentMoves.push(data.tile);
+		player.opponent.moves.push(data.tile);
+
 		const { allowed, end } = game.selectTile(
-			{ str: 'playerTwo', mark: game.opponentMark[0], moves: game.opponentMoves },
+			{ str: 'playerTwo', mark: player.opponent.mark, moves: player.opponent.moves },
 			data.tile
 		);
-		if (allowed && !end) game.enableGame(0);
+
+		// player two wins
+		if (allowed && !end) {
+			player.opponent.score++;
+			document.querySelector(`.playerTwo`).querySelector('.score').innerHTML = player.opponent.score;
+			game.enableGame(0);
+		}
 	}
 
+	// emoji -----------------------------------
 	if (data.action.toString() === 'emoji') {
 		game.displayEmoji('playerTwo', data.emoji);
 	}
 
+	// restart -----------------------------------
 	if (data.action.toString() === 'restart_game') {
-		game.opponentMoves.length = 0;
+		player.opponent.moves.length = 0;
 		game.enableGame(player);
 	}
 });
@@ -89,7 +107,7 @@ socket.on('player-left', () => {
 	// remove player score
 	document.querySelector('.playerTwo').querySelector('.score').innerHTML = '0';
 	game.disableGame(0);
-	return game.playerLeft(player.opponent);
+	return game.playerLeft(player.opponent.username);
 });
 
 socket.on('unable-to-join', ({ server }) => console.log(server));
