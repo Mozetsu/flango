@@ -49,16 +49,12 @@ socket.on('player-id', ({ _id }) => {
 });
 
 socket.on('player-data', ({ mark, opponent }) => {
-	if (opponent) {
-		console.log(opponent);
-
-		player.opponent = opponent;
-		game.setupRoom(player, opponent);
-		return;
-	}
+	if (!opponent) return (player.mark = mark);
 
 	player.mark = mark;
+	player.opponent = opponent;
 	mark === 'cross' ? game.opponentMark.push('circle') : game.opponentMark.push('cross');
+	game.setupRoom(player, opponent);
 });
 
 socket.on('player-left', () => {

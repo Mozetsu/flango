@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
 			const { free, taken } = addPlayer(rooms[i], player);
 
 			// send new player to existing player
-			io.to(rooms[i][taken]._id).emit('player-data', { opponent: rooms[i][free].username });
+			io.to(rooms[i][taken]._id).emit('player-data', { mark: rooms[i][taken].mark, opponent: rooms[i][free].username });
 
 			// send existing player to new player
 			io.to(player._id).emit('player-data', { mark: rooms[i][free].mark, opponent: rooms[i][taken].username });
