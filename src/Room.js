@@ -9,12 +9,6 @@ class Room {
 		this.players = [player._id];
 
 		this.playing = null;
-
-		this.score = {
-			playerOne: 0,
-			playerTwo: 0,
-			tie: 0,
-		};
 	}
 }
 

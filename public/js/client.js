@@ -79,11 +79,14 @@ socket.on('player-action', (data) => {
 			data.tile
 		);
 
-		// player two wins
 		if (allowed && !end) {
+			game.enableGame(0);
+		}
+
+		// player two wins
+		if (end) {
 			player.opponent.score++;
 			document.querySelector(`.playerTwo`).querySelector('.score').innerHTML = player.opponent.score;
-			game.enableGame(0);
 		}
 	}
 
@@ -100,6 +103,10 @@ socket.on('player-action', (data) => {
 });
 
 socket.on('player-left', () => {
+	player.moves.length = 0;
+	player.score = 0;
+	player.opponent.moves.length = 0;
+	player.opponent.score = 0;
 	// remove player one score
 	document.querySelector('.playerOne').querySelector('.score').innerHTML = '0';
 	// remove player two username

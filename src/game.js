@@ -8,8 +8,8 @@ function addPlayer(room, player) {
 
 	// define players opponent and mark
 	if (room[takenPlayer] !== null) {
-		room[takenPlayer].opponent = room[freePlayer]._id;
-		room[freePlayer].opponent = room[takenPlayer]._id;
+		room[takenPlayer].opponent._id = room[freePlayer]._id;
+		room[freePlayer].opponent._id = room[takenPlayer]._id;
 	}
 
 	if (room['playerOne'] !== null) {
@@ -35,7 +35,12 @@ function removePlayer(room, playerId) {
 	if (room.players.length === 2) {
 		player = playerId === room['playerOne']._id ? 'playerOne' : 'playerTwo';
 		opponent = player === 'playerOne' ? 'playerTwo' : 'playerOne';
-		room[opponent].opponent = null;
+		room[opponent].opponent = {
+			username: null,
+			mark: null,
+			moves: [],
+			score: 0,
+		};
 	}
 
 	const usr = room[player].username;
@@ -43,8 +48,6 @@ function removePlayer(room, playerId) {
 
 	const i = room.players.findIndex((e) => e === playerId);
 	room.players.splice(i, 1);
-
-	room.score = { playerOne: 0, playerTwo: 0, tie: 0 };
 
 	return usr;
 }

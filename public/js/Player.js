@@ -5,6 +5,7 @@ export class Player {
 		this.username = username;
 		this.mark = null;
 		this.opponent = {
+			_id: null,
 			username: null,
 			mark: null,
 			moves: [],

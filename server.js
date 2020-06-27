@@ -65,7 +65,10 @@ io.on('connection', (socket) => {
 		socket.join(rooms[i]._id, () => {});
 	});
 
-	socket.on('player-action', (action) => socket.to(socket.room).emit('player-action', action));
+	socket.on('player-action', (action) => {
+		console.log(action);
+		socket.to(socket.room).emit('player-action', action);
+	});
 
 	socket.on('disconnect', () => {
 		// search room index
