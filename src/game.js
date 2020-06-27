@@ -24,16 +24,25 @@ function addPlayer(room, player) {
 }
 
 function removePlayer(room, playerId) {
-	const player = playerId === room['playerOne']._id ? 'playerOne' : 'playerTwo';
-	const opponent = playerId !== room['playerOne']._id ? 'playerOne' : 'playerTwo';
+	let player = null;
+	let opponent = null;
+
+	if (room.players.length === 1 && room['playerOne']) player = 'playerOne';
+	else player = 'playerTwo';
+
+	if (room.players.length === 2) {
+		player = playerId === room['playerOne']._id ? 'playerOne' : 'playerTwo';
+		opponent = player === 'playerOne' ? 'playerTwo' : 'playerOne';
+		room[opponent].opponent = null;
+	}
 
 	room[player] = null;
-	if (room[opponent] !== null) room[opponent].opponent = null;
 
 	const i = room.players.findIndex((e) => e === playerId);
 	room.players.splice(i, 1);
 
 	room.score = { playerOne: 0, playerTwo: 0, tie: 0 };
+	console.log(room);
 }
 
 module.exports = { addPlayer, removePlayer };
