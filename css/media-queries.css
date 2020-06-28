@@ -8,10 +8,11 @@
 	}
 
 	.container {
-		padding: 0;
+		position: relative;
+		padding-top: 35px;
 		border: none;
 		max-width: calc(100vw);
-		height: calc(100vh - 50px);
+		height: calc(100vh);
 	}
 
 	.scoreboard {
@@ -19,15 +20,11 @@
 	}
 
 	.gameboard {
-		top: 0;
+		position: relative;
 		width: calc(100vw - var(--pseudo-padding));
 		height: calc(100vw - var(--pseudo-padding));
 		grid-template-rows: repeat(3, minmax(20px, 1fr));
 		grid-template-columns: repeat(3, minmax(20px, calc(100vw / 3)));
-	}
-
-	.tile:hover {
-		background-color: var(--bc);
 	}
 
 	.tile svg {
@@ -36,12 +33,10 @@
 
 	.tapbar {
 		position: relative;
-		top: 0;
-		transform: translateY(37%);
-		/* width: calc(100vw - var(--pseudo-padding)); */
-		width: 100vw;
-		height: 70px;
-		border-radius: 0px;
+		transform: translateY(-41%);
+		width: calc(100vw);
+		height: 65px;
+		border-radius: 0;
 	}
 
 	.tapbar .tap-container .tap-btn .emoji-btn {
@@ -51,16 +46,14 @@
 	}
 
 	#emoji-card {
-		position: absolute;
-		padding: 20px 15px;
-		width: calc(100vw - 10px);
+		position: relative;
+		padding: 20px;
 		height: auto;
 		border-radius: 2px;
-
+		width: calc(100vw - var(--pseudo-padding));
+		transform: translate(-81%, -142%);
 		grid-template-columns: repeat(5, calc((100vw / 6)));
 		grid-template-rows: repeat(2, auto);
-
-		transform: translate(-78.7%, -139%);
-		box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.12);
+		box-shadow: 0 0px 3px 3px rgba(0, 0, 0, 0.08);
 	}
 }

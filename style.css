@@ -16,7 +16,7 @@
 	--player-one-secondary: #add7ff;
 	--player-two-primary: rgb(255, 166, 166);
 	--player-two-secondary: #ffb7b7;
-	--secondary: #666;
+	--secondary: rgb(121, 121, 121);
 	--tile-border: 3px solid #666;
 	--board-width: 400px;
 	--font: 'Open Sans', sans-serif;
