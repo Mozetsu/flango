@@ -8,6 +8,7 @@ const Room = require('./src/Room.js');
 const chalk = require('chalk');
 const { addPlayer, removePlayer } = require('./src/game.js');
 
+// pseudo database xD
 const rooms = [];
 
 app.use(express.json());
@@ -65,9 +66,7 @@ io.on('connection', (socket) => {
 		socket.join(rooms[i]._id, () => {});
 	});
 
-	socket.on('player-action', (action) => {
-		socket.to(socket.room).emit('player-action', action);
-	});
+	socket.on('player-action', (action) => socket.to(socket.room).emit('player-action', action));
 
 	socket.on('disconnect', () => {
 		// search room index
@@ -80,7 +79,11 @@ io.on('connection', (socket) => {
 		socket.to(rooms[i]._id).emit('player-left');
 
 		const player = removePlayer(rooms[i], socket.id);
+
 		console.log(`${chalk.inverse(` ${rooms[i]._id} `)} ${chalk.yellow.bold(`${player} LEFT`)}`);
+
+		// remove room if completely empty
+		if (rooms[i].players.length === 0) rooms.splice(i, 1);
 	});
 });
 

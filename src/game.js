@@ -20,6 +20,7 @@ function addPlayer(room, player) {
 		room['playerTwo'].mark = 'circle';
 	}
 
+	console.log(room);
 	return { free: freePlayer, taken: takenPlayer };
 }
 
