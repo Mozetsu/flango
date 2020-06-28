@@ -66,7 +66,6 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('player-action', (action) => {
-		console.log(action);
 		socket.to(socket.room).emit('player-action', action);
 	});
 

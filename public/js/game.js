@@ -1,6 +1,6 @@
 import { win, marks, allowed, checkWin } from './data.js';
 
-export function enableGame(player) {
+export function enable(player) {
 	if (!player) {
 		document.querySelector('.restart').pointerEvents = 'all';
 		return document.querySelectorAll('.tile').forEach((t) => (t.style.pointerEvents = 'all'));
@@ -23,7 +23,7 @@ export function enableGame(player) {
 	});
 }
 
-export function disableGame(state) {
+export function disable(state) {
 	if (!state) {
 		document.querySelector('.restart').style.pointerEvents = 'none';
 		return document.querySelectorAll('.tile').forEach((t) => (t.style.pointerEvents = 'none'));
@@ -40,17 +40,16 @@ export function disableGame(state) {
 	});
 }
 
-export function selectTile(player, i) {
+export function select(player, i) {
 	const tile = document.querySelector(`.tile:nth-child(${i})`);
 	const n = parseInt(tile.classList[1]);
 
 	// position not allowed and played before
-	if (!allowed.includes(n) || player.moves.includes(n)) return { allowed: false };
+	if (!allowed.includes(n) || player.moves.includes(n)) return { valid: false };
 
 	// position allowed and not played before
 	if (allowed.includes(n) && !player.moves.includes(n)) {
-		disableGame(0);
-		// find elem index and removes it
+		disable(0);
 		const i = allowed.findIndex((e) => e === n);
 		allowed.splice(i, 1);
 		player.moves.push(n);
@@ -60,17 +59,24 @@ export function selectTile(player, i) {
 
 	const { arr, str } = checkWin(win, player);
 
+	// win
 	if (arr.length > 0) {
-		// document.querySelector(`.${str}`).querySelector('.score').innerHTML = .
 		arr.forEach((e) => document.querySelector(`.tile:nth-child(${e})`).classList.add(`${str}-win`));
-		disableGame(1);
-		return { allowed: true, end: true };
+		disable(1);
+		return { valid: true, end: true };
 	}
 
-	return { allowed: true, end: false };
+	// tie
+	if (allowed.length === 0) {
+		disable(1);
+		return { valid: true, end: true, tie: true };
+	}
+
+	// next play
+	return { valid: true, end: false };
 }
 
-export function displayEmoji(player, emoji) {
+export function emoji(player, emoji) {
 	if (document.querySelector(`.${player}`).children[2].style.opacity !== '1') {
 		// show emoji
 		document.querySelector(`.${player}`).children[2].innerHTML = emoji;

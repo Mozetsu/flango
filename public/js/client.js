@@ -12,27 +12,35 @@ const socket = io();
 
 // tiles event
 const tiles = document.querySelectorAll('.tile');
-tiles.forEach((t) => t.addEventListener('click', tileClick));
+tiles.forEach((t) => t.addEventListener('click', click));
 
-function tileClick() {
-	// check if play is allowed
-	const { allowed, end } = game.selectTile(
+function click() {
+	// check if play is valid
+	const { valid, end, tie } = game.select(
 		{ str: 'playerOne', moves: player.moves, mark: player.mark },
 		this.classList[1]
 	);
-	// if allowed, send socket io event
-	if (allowed) socket.emit('player-action', { action: 'select_tile', tile: this.classList[1], moves: player.moves });
+
+	// if valid, emit play
+	if (valid) socket.emit('player-action', { action: 'select_tile', tile: this.classList[1], moves: player.moves });
+
 	// player one wins
-	if (end) {
+	if (end && !tie) {
 		player.score++;
 		document.querySelector(`.playerOne`).querySelector('.score').innerHTML = player.score;
+	}
+
+	// tie
+	if (tie) {
+		player.tie++;
+		document.querySelector(`.tie`).querySelector('.score').innerHTML = player.tie;
 	}
 }
 
 // emojis
 document.querySelectorAll('.emoji').forEach((e) =>
 	e.addEventListener('click', function () {
-		const { allowed } = game.displayEmoji('playerOne', this.innerHTML);
+		const { allowed } = game.emoji('playerOne', this.innerHTML);
 		if (allowed) socket.emit('player-action', { action: 'emoji', emoji: this.innerHTML });
 	})
 );
@@ -42,7 +50,7 @@ const restartBtn = document.querySelector('.restart');
 restartBtn.addEventListener('click', () => {
 	socket.emit('player-action', { action: 'restart_game' });
 	player.opponent.moves.length = 0;
-	game.enableGame(player);
+	game.enable(player);
 });
 
 // socket ###############################################################################################
@@ -57,14 +65,14 @@ socket.on('player-id', ({ _id }) => {
 
 socket.on('player-data', ({ mark, opponent }) => {
 	if (!opponent) {
-		game.disableGame(0);
+		game.disable(0);
 		return (player.mark = mark);
 	}
 
 	player.mark = mark;
 	player.opponent.username = opponent;
 	player.opponent.mark = mark === 'cross' ? 'circle' : 'cross';
-	game.enableGame(player);
+	game.enable(player);
 	game.playerJoined(opponent);
 	game.setupRoom(player, opponent);
 });
@@ -74,47 +82,56 @@ socket.on('player-action', (data) => {
 	if (data.action.toString() === 'select_tile') {
 		player.opponent.moves.push(data.tile);
 
-		const { allowed, end } = game.selectTile(
+		const { valid, end, tie } = game.select(
 			{ str: 'playerTwo', mark: player.opponent.mark, moves: player.opponent.moves },
 			data.tile
 		);
 
-		if (allowed && !end) {
-			game.enableGame(0);
-		}
+		if (valid && !end) return game.enable(0);
 
 		// player two wins
-		if (end) {
+		if (end && !tie) {
 			player.opponent.score++;
 			document.querySelector(`.playerTwo`).querySelector('.score').innerHTML = player.opponent.score;
+			return;
+		}
+
+		// tie
+		if (tie) {
+			player.tie++;
+			document.querySelector(`.tie`).querySelector('.score').innerHTML = player.tie;
 		}
 	}
 
 	// emoji -----------------------------------
 	if (data.action.toString() === 'emoji') {
-		game.displayEmoji('playerTwo', data.emoji);
+		game.emoji('playerTwo', data.emoji);
 	}
 
 	// restart -----------------------------------
 	if (data.action.toString() === 'restart_game') {
 		player.opponent.moves.length = 0;
-		game.enableGame(player);
+		game.enable(player);
 	}
 });
 
 socket.on('player-left', () => {
+	// reset scores
 	player.moves.length = 0;
 	player.score = 0;
+	player.tie = 0;
 	player.opponent.moves.length = 0;
 	player.opponent.score = 0;
-	// remove player one score
+
+	// reset player one score
 	document.querySelector('.playerOne').querySelector('.score').innerHTML = '0';
-	// remove player two username
+	// reset tie score
+	document.querySelector('.tie').querySelector('.score').innerHTML = '0';
+	// reset player two
 	document.querySelector('.playerTwo').querySelector('.username').children[0].innerHTML = 'PLAYER TWO';
-	// remove player score
 	document.querySelector('.playerTwo').querySelector('.score').innerHTML = '0';
-	game.disableGame(0);
-	return game.playerLeft(player.opponent.username);
+	game.playerLeft(player.opponent.username);
+	return game.disable(0);
 });
 
 socket.on('unable-to-join', ({ server }) => console.log(server));

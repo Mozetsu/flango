@@ -35,7 +35,6 @@ function arrayContainsArray(arr1, arr2) {
 	return tmp.length === arr1.length;
 }
 
-// arr -> win combinations array
 export function checkWin(arr, player) {
 	// not enough plays to win
 	if (player.moves.length < 3) return { str: '', arr: [] };
@@ -48,8 +47,6 @@ export function checkWin(arr, player) {
 			tmp.push(...combination);
 		}
 	}
-
 	const parsedArr = [...new Set(tmp)]; // removes duplicates
-
 	return { str: player.str, arr: parsedArr };
 }

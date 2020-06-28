@@ -12,6 +12,7 @@ export class Player {
 			score: 0,
 		};
 		this.score = 0;
+		this.tie = 0;
 		this.moves = [];
 	}
 }
