@@ -1,63 +1,67 @@
-@media only screen and (max-width: 410px) {
-	.scoreboard {
-		width: 380px;
+@media only screen and (max-width: 460px) {
+	:root {
+		--pseudo-padding: 30px;
 	}
 
-	.game-board {
-		max-width: 380px;
-		max-height: 380px;
+	body {
+		background-image: none;
+		overflow: hidden;
+	}
+
+	.container {
+		padding: 0;
+		border: none;
+		max-width: calc(100vw);
+		height: calc(100vh - 50px);
+	}
+
+	.scoreboard {
+		width: calc(100vw - var(--pseudo-padding));
+	}
+
+	.gameboard {
+		top: 0;
+		width: calc(100vw - var(--pseudo-padding));
+		height: calc(100vw - var(--pseudo-padding));
+		grid-template-rows: repeat(3, minmax(20px, 1fr));
+		grid-template-columns: repeat(3, minmax(20px, calc(100vw / 3)));
+	}
+
+	.tile:hover {
+		background-color: transparent;
 	}
 
 	.tile svg {
-		width: 60px;
+		width: calc(70%);
 	}
 
-	.notification {
-		width: 380px;
-	}
-}
-
-@media only screen and (max-width: 375px) {
-	.game-board {
-		max-width: 350px;
-		max-height: 350px;
-	}
-}
-
-@media only screen and (max-width: 360px) {
-	.scoreboard {
-		width: 320px;
+	.tapbar {
+		position: relative;
+		top: 0;
+		transform: translateY(37%);
+		/* width: calc(100vw - var(--pseudo-padding)); */
+		width: 100vw;
+		height: 70px;
+		border-radius: 0px;
 	}
 
-	.game-board {
-		max-width: 320px;
-		max-height: 320px;
+	.tapbar .tap-container .tap-btn .emoji-btn {
+		width: 40px;
+		height: 40px;
+		outline: none;
 	}
 
-	.tile svg {
-		width: 60px;
-	}
+	#emoji-card {
+		position: absolute;
+		padding: 20px 15px;
+		width: calc(100vw - 10px);
+		height: auto;
+		border-radius: 2px;
 
-	.notification {
-		width: 320px;
-	}
-}
+		grid-template-columns: repeat(5, calc((100vw / 6)));
+		grid-template-rows: repeat(2, auto);
 
-@media only screen and (max-width: 320px) {
-	.scoreboard {
-		width: 280px;
-	}
-
-	.game-board {
-		max-width: 280px;
-		max-height: 280px;
-	}
-
-	.tile svg {
-		width: 50px;
-	}
-
-	.notification {
-		width: 280px;
+		transform: translate(-78.7%, -139%);
+		box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.12);
 	}
 }

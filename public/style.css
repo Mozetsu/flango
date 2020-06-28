@@ -51,21 +51,3 @@ body {
 	align-items: center;
 	overflow: hidden;
 }
-
-.container {
-	position: relative;
-	margin: 0 auto;
-	padding: 15px;
-	background-color: var(--bc);
-	/* width: 100vw; */
-	border: 5px solid var(--secondary);
-	width: 600px;
-	height: 600px;
-	/* height: 100vh; */
-	border-radius: var(--border-radius);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	font-family: var(--font);
-}
