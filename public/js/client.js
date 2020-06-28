@@ -43,8 +43,8 @@ function click() {
 // emojis
 document.querySelectorAll('.emoji').forEach((e) =>
 	e.addEventListener('click', function () {
-		const { allowed } = game.emoji('playerOne', this.innerHTML);
-		if (allowed) socket.emit('player-action', { action: 'emoji', emoji: this.innerHTML });
+		const { allowed } = game.emoji('playerOne', this.classList[1]);
+		if (allowed) socket.emit('player-action', { action: 'emoji', emoji: this.classList[1] });
 	})
 );
 
@@ -108,6 +108,8 @@ socket.on('player-action', (data) => {
 
 	// emoji -----------------------------------
 	if (data.action.toString() === 'emoji') {
+		console.log(data.emoji);
+
 		game.emoji('playerTwo', data.emoji);
 	}
 

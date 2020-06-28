@@ -79,7 +79,7 @@ export function select(player, i) {
 export function emoji(player, emoji) {
 	if (document.querySelector(`.${player}`).children[2].style.opacity !== '1') {
 		// show emoji
-		document.querySelector(`.${player}`).children[2].innerHTML = emoji;
+		document.querySelector(`.${player}`).children[2].innerHTML = `<img src="./svg/emojis/${emoji}.svg" />`;
 		document.querySelector(`.${player}`).children[2].style.opacity = 1;
 		// hide emoji
 		setTimeout(() => {
