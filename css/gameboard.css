@@ -1,3 +1,18 @@
+.container {
+	margin: 0 auto;
+	padding: 15px;
+	background-color: var(--bc);
+	border: 5px solid var(--secondary);
+	width: 600px;
+	height: 600px;
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	font-family: var(--font);
+}
+
 .gameboard {
 	position: relative;
 	top: 20px;
