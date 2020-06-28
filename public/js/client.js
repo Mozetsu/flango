@@ -12,7 +12,10 @@ const socket = io();
 
 // tiles event
 const tiles = document.querySelectorAll('.tile');
-tiles.forEach((t) => t.addEventListener('click', click));
+tiles.forEach((t) => {
+	t.style.pointerEventes = 'none';
+	t.addEventListener('click', click);
+});
 
 function click() {
 	// check if play is valid

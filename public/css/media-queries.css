@@ -23,6 +23,11 @@
 		width: calc(100vw - var(--pseudo-padding));
 	}
 
+	.notification {
+		width: calc(100vw - var(--pseudo-padding));
+		height: 45px;
+	}
+
 	.gameboard {
 		top: 0;
 		width: calc(100vw - var(--pseudo-padding));
