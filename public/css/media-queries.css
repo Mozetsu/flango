@@ -1,18 +1,22 @@
+/* screens bigger than 460px */
+@media only screen and (min-width: 460px) {
+	.tile:hover {
+		background-color: var(--tile-hover);
+	}
+}
+
+/* screens smaller than 460px */
 @media only screen and (max-width: 460px) {
 	:root {
 		--pseudo-padding: 30px;
 	}
 
-	body {
-		background-image: none;
-		overflow: hidden;
-	}
-
 	.container {
-		padding: 0;
+		padding-top: 30px;
 		border: none;
 		max-width: calc(100vw);
-		height: calc(100vh - 50px);
+		height: calc(100vh);
+		overflow: hidden;
 	}
 
 	.scoreboard {
@@ -25,10 +29,6 @@
 		height: calc(100vw - var(--pseudo-padding));
 		grid-template-rows: repeat(3, minmax(20px, 1fr));
 		grid-template-columns: repeat(3, minmax(20px, calc(100vw / 3)));
-	}
-
-	.tile:hover {
-		background-color: transparent;
 	}
 
 	.tile svg {

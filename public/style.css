@@ -51,3 +51,10 @@ body {
 	align-items: center;
 	overflow: hidden;
 }
+
+/* remove background image on smaller devices */
+@media only screen and (max-width: 460px) {
+	body {
+		background-image: none;
+	}
+}

@@ -38,10 +38,6 @@
 	transition: background-color 0.06s ease-in;
 }
 
-.tile:hover {
-	background-color: var(--tile-hover);
-}
-
 .tile:nth-child(1),
 .tile:nth-child(3),
 .tile:nth-child(7),

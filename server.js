@@ -73,6 +73,9 @@ io.on('connection', (socket) => {
 		// search room index
 		const i = rooms.findIndex((room) => room._id === socket.room);
 
+		// room not found
+		if (i === -1) return;
+
 		// notify room on player leave
 		socket.to(rooms[i]._id).emit('player-left');
 
