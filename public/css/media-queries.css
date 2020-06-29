@@ -44,20 +44,21 @@
 
 	.tapbar {
 		position: relative;
-		transform: translateY(-34%);
+		transform: translateY(-42%);
 		width: 100vw;
 		height: 65px;
 		border-radius: 0;
 	}
 
-	.tapbar .tap-container .tap-btn {
-		width: 100%;
+	.tapbar .tap-container .tap-btn .emoji-btn {
+		width: 40px;
+		height: 40px;
+		outline: none;
 	}
 
-	.tapbar .tap-container .tap-btn .emoji-btn {
-		width: 42px;
-		height: 42px;
-		outline: none;
+	.tapbar .tap-container .tap-btn .emoji-btn .smile-btn {
+		width: 35px;
+		height: 35px;
 	}
 
 	#emoji-card {
@@ -67,7 +68,7 @@
 		width: calc(100vw - var(--pseudo-padding));
 		max-width: 400px;
 		height: 200px;
-		transform: translate(-50%, -70px);
+		transform: translate(-50%, -80px);
 		grid-template-columns: repeat(5, minmax(50px, 1fr));
 		grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
 		border-radius: 2px;
