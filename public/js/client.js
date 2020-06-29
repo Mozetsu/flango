@@ -108,8 +108,6 @@ socket.on('player-action', (data) => {
 
 	// emoji -----------------------------------
 	if (data.action.toString() === 'emoji') {
-		console.log(data.emoji);
-
 		game.emoji('playerTwo', data.emoji);
 	}
 

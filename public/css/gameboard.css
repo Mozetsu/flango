@@ -1,11 +1,10 @@
 .container {
 	position: relative;
-	margin: 0 auto;
 	padding: 15px;
 	background-color: var(--bc);
 	border: 5px solid var(--secondary);
-	width: 600px;
-	height: 600px;
+	width: var(--container-width);
+	height: var(--container-width);
 	border-radius: 3px;
 	display: flex;
 	flex-direction: column;
