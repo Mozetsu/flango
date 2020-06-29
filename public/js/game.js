@@ -1,4 +1,4 @@
-import { win, marks, allowed, checkWin } from './data.js';
+import { win, marks, allowed, checkWin, displayEmojis, hideEmojis } from './data.js';
 
 export function enable(player) {
 	if (!player) {
@@ -104,6 +104,14 @@ export function setupRoom(playerOne, playerTwo) {
 
 	// room id
 	document.querySelector('.room-id').innerHTML = playerOne.room;
+
+	// display emojis
+	document.querySelector('.emoji-btn').addEventListener('click', displayEmojis);
+
+	// hide emojis on page click
+	document.addEventListener('click', (e) => {
+		if (e.target.classList[0] !== 'smile-btn') hideEmojis();
+	});
 }
 
 export function playerJoined(player) {

@@ -1,8 +1,6 @@
 import * as game from './game.js';
 import { Player } from './Player.js';
 
-// return;
-
 const player = new Player(
 	window.prompt('Room').toString().toUpperCase(),
 	window.prompt('Username').toString().toUpperCase()

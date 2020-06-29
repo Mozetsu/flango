@@ -1,20 +1,21 @@
 #emoji-card {
 	position: absolute;
+	bottom: 0;
 	padding: 10px;
 	background-color: var(--bc);
 	border-radius: var(--border-radius);
-
 	display: grid;
-	grid-template-rows: repeat(3, 50px);
-	grid-template-columns: repeat(3, 50px);
-
-	transform: translate(-40%, -135%);
+	grid-template-rows: repeat(3, 55px);
+	grid-template-columns: repeat(3, 55px);
+	align-items: center;
+	gap: 5px;
+	transform: translate(69%, -20%);
 	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.12);
 	opacity: 0;
 	z-index: 2;
 	pointer-events: none;
-	transition: opacity 0.2s ease-in;
 	cursor: default;
+	transition: opacity 0.2s ease-in;
 }
 
 #leave-card {
@@ -69,16 +70,13 @@
 .emoji {
 	padding: 5px;
 	list-style: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.tap-btn:focus-within #emoji-card,
-.tap-btn:focus-within #leave-card {
-	opacity: 1;
-	pointer-events: auto;
-	cursor: default;
-}
-
-.tap-btn:focus-within #emoji-card li img {
-	pointer-events: auto;
+.emoji img {
+	width: 40px;
+	height: 40px;
 	cursor: pointer;
 }

@@ -35,7 +35,7 @@
 		width: calc(100vw - var(--pseudo-padding));
 		height: calc(100vw - var(--pseudo-padding));
 		grid-template-rows: repeat(3, minmax(20px, 1fr));
-		grid-template-columns: repeat(3, minmax(20px, calc(100vw / 3)));
+		grid-template-columns: repeat(3, minmax(20px, 1fr));
 	}
 
 	.tile svg {
@@ -51,7 +51,7 @@
 	}
 
 	.tapbar .tap-container .tap-btn {
-		width: 100vw;
+		width: 100%;
 	}
 
 	.tapbar .tap-container .tap-btn .emoji-btn {
@@ -61,15 +61,17 @@
 	}
 
 	#emoji-card {
-		/* opacity: 0; */
-		position: relative;
-		padding: 20px;
-		height: auto;
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+		width: calc(100vw - var(--pseudo-padding));
+		max-width: 400px;
+		height: 200px;
+		transform: translate(-50%, -70px);
+		grid-template-columns: repeat(5, minmax(50px, 1fr));
+		grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
 		border-radius: 2px;
-		width: 90vw;
-		transform: translate(calc(-80%), -142%);
-		grid-template-columns: repeat(auto-fit, minmax(55px, 3fr));
-		grid-template-rows: repeat(auto-fit, minmax(55px, 3fr));
-		box-shadow: 0 0px 3px 3px rgba(0, 0, 0, 0.08);
+		box-shadow: 0 0px 2px 2px rgba(0, 0, 0, 0.1);
+		overflow: auto;
 	}
 }

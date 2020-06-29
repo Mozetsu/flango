@@ -27,6 +27,18 @@ export const marks = {
 	},
 };
 
+export function displayEmojis() {
+	const emojiPopup = document.querySelector('#emoji-card');
+	emojiPopup.style.opacity = 1;
+	document.querySelectorAll('.emoji').forEach((emoji) => (emoji.style.pointerEvents = 'all'));
+}
+
+export function hideEmojis() {
+	const emojiPopup = document.querySelector('#emoji-card');
+	emojiPopup.style.opacity = 0;
+	document.querySelectorAll('.emoji').forEach((emoji) => (emoji.style.pointerEvents = 'none'));
+}
+
 function arrayContainsArray(arr1, arr2) {
 	const tmp = [];
 	arr1.forEach((a) => {
