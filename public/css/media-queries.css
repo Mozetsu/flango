@@ -74,6 +74,7 @@
 		grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
 		border-radius: 2px;
 		box-shadow: 0 0px 2px 2px rgba(0, 0, 0, 0.1);
+		transition: opacity 0.1s ease-in;
 		overflow: auto;
 	}
 
